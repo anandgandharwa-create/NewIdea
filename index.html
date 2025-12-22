@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<title>My Permission</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: #0f172a;
+  color: #e5e7eb;
+}
+
+.container {
+  max-width: 420px;
+  margin: auto;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  font-size: 26px;
+  margin-bottom: 5px;
+}
+
+.tagline {
+  text-align: center;
+  font-size: 14px;
+  color: #94a3b8;
+  margin-bottom: 30px;
+}
+
+.card {
+  background: #020617;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.label {
+  font-size: 16px;
+}
+
+.sub {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.switch {
+  position: relative;
+  width: 46px;
+  height: 24px;
+}
+
+.switch input {
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  inset: 0;
+  background: #334155;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.slider:before {
+  content: "";
+  position: absolute;
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background: white;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+input:checked + .slider {
+  background: #22c55e;
+}
+
+input:checked + .slider:before {
+  transform: translateX(22px);
+}
+
+.footer {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 12px;
+  color: #64748b;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>My Permission</h1>
+  <div class="tagline">मेरा डेटा, मेरी शर्तें</div>
+
+  <div class="card">
+    <div>
+      <div class="label">📍 Location</div>
+      <div class="sub">सिर्फ़ ज़रूरत पर</div>
+    </div>
+    <label class="switch">
+      <input type="checkbox" id="location">
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <div class="card">
+    <div>
+      <div class="label">🎙️ Microphone</div>
+      <div class="sub">ऐप खुला हो तब</div>
+    </div>
+    <label class="switch">
+      <input type="checkbox" id="mic">
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <div class="card">
+    <div>
+      <div class="label">📸 Camera</div>
+      <div class="sub">हर बार पूछो</div>
+    </div>
+    <label class="switch">
+      <input type="checkbox" id="camera">
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <div class="card">
+    <div>
+      <div class="label">📊 Usage Data</div>
+      <div class="sub">Ads के लिए नहीं</div>
+    </div>
+    <label class="switch">
+      <input type="checkbox" id="usage">
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <div class="card">
+    <div>
+      <div class="label">📞 Contacts</div>
+      <div class="sub">कभी नहीं</div>
+    </div>
+    <label class="switch">
+      <input type="checkbox" id="contacts">
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <div class="footer">
+    My Permission • Prototype
+  </div>
+</div>
+
+<script>
+const ids = ["location", "mic", "camera", "usage", "contacts"];
+
+ids.forEach(id => {
+  const el = document.getElementById(id);
+  el.checked = localStorage.getItem(id) === "true";
+  el.addEventListener("change", () => {
+    localStorage.setItem(id, el.checked);
+  });
+});
+</script>
+
+</body>
+</html>
