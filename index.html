@@ -1,181 +1,220 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Mind Tools Suite</title>
+<title>Zero Quantum Frequency™</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+*{box-sizing:border-box;margin:0;padding:0}
+
 body{
- margin:0;
- font-family:system-ui,sans-serif;
- background:radial-gradient(circle at top,#1b1b1b,#000);
- color:#f1f1f1;
+  height:100vh;
+  background:radial-gradient(circle at top,#1c1c30,#0b0b12);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  color:#ffffff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
-.container{
- max-width:560px;
- margin:30px auto;
- background:linear-gradient(180deg,#111,#0a0a0a);
- border-radius:20px;
- padding:26px;
- box-shadow:0 20px 60px rgba(0,0,0,.9);
+
+.app{
+  width:100%;
+  max-width:380px;
+  padding:20px;
 }
-h1{text-align:center;margin-bottom:20px;}
-.page{display:none;}
-.page.active{display:block;}
+
+.header{
+  text-align:center;
+  font-size:16px;
+  opacity:.85;
+  margin-bottom:18px;
+}
 
 .card{
- padding:16px;
- margin-bottom:14px;
- border-radius:14px;
- background:rgba(255,255,255,.05);
- cursor:pointer;
- transition:.3s;
-}
-.card:hover{background:rgba(255,255,255,.1);}
-
-button{
- width:100%;
- padding:14px;
- margin-top:12px;
- border:none;
- border-radius:14px;
- font-size:16px;
- font-weight:600;
- cursor:pointer;
-}
-.primary{background:linear-gradient(90deg,#ff4d4d,#ff1a1a);color:#fff;}
-.secondary{background:#222;color:#fff;}
-
-.question, textarea, input{
- width:100%;
- margin-bottom:12px;
- padding:12px;
- border-radius:12px;
- border:none;
- background:rgba(255,255,255,.05);
- color:#fff;
+  background:linear-gradient(180deg,#1d1d2e,#14141f);
+  border-radius:22px;
+  padding:26px 22px 30px;
+  box-shadow:0 25px 45px rgba(0,0,0,.45);
 }
 
-.result{
- margin-top:16px;
- padding:16px;
- border-radius:14px;
- background:#0f2e1d;
- text-align:center;
- font-size:18px;
- font-weight:600;
+.hidden{display:none}
+
+.title{
+  font-size:22px;
+  line-height:1.5;
+  margin-bottom:22px;
+  text-align:center;
 }
 
-.wheel{
- width:200px;
- height:200px;
- border-radius:50%;
- margin:20px auto;
- background:conic-gradient(#ff4d4d 0deg 90deg,#ffcc00 90deg 180deg,#00cc66 180deg 270deg,#3399ff 270deg 360deg);
- display:flex;
- align-items:center;
- justify-content:center;
- font-weight:700;
+.option{
+  width:100%;
+  margin:10px 0;
+  padding:14px;
+  border-radius:14px;
+  border:1px solid #444;
+  background:transparent;
+  color:#fff;
+  font-size:15px;
+  cursor:pointer;
 }
-.pointer{
- text-align:center;
- font-size:20px;
- margin-top:-10px;
+
+.option:hover{
+  background:#7a88ff;
+  border-color:#7a88ff;
 }
-.lockBox{
- background:rgba(255,255,255,.06);
- padding:16px;
- border-radius:14px;
+
+.section{
+  margin-bottom:16px;
 }
-.small{text-align:center;font-size:13px;opacity:.8;}
+
+.section h4{
+  font-size:13px;
+  color:#7a88ff;
+  margin-bottom:6px;
+}
+
+.section p{
+  font-size:14.5px;
+  line-height:1.6;
+  opacity:.95;
+}
+
+.footer{
+  text-align:center;
+  font-size:12px;
+  opacity:.55;
+  margin-top:18px;
+}
 </style>
 </head>
 
 <body>
-<div class="container">
 
-<!-- HOME -->
-<div class="page active" id="home">
-<h1>🧠 Mind Tools Suite</h1>
+<div class="app">
+  <div class="header">Zero Quantum Frequency™</div>
 
-<div class="card" onclick="openTool('mnc')">🔊 Mind Noise Calculator</div>
-<div class="card" onclick="openTool('dfm')">⚖️ Decision Fatigue Meter</div>
-<div class="card" onclick="openTool('eli')">❤️ Emotional Load Index</div>
-<div class="card" onclick="openTool('mrt')">⏳ Mental Recovery Time</div>
-<div class="card" onclick="openTool('wheel')">🔄 Spin Decision Wheel</div>
-<div class="card" onclick="openTool('lock')">🔒 Decision Lock</div>
+  <!-- PAGE 1 -->
+  <div class="card" id="page1">
+    <div class="title">
+      Check your current<br>inner frequency
+    </div>
+    <button class="option" onclick="goPage(2)">
+      Check Your Frequency
+    </button>
+  </div>
 
-<p class="small">Instant tools for mental clarity & decisions</p>
-</div>
+  <!-- PAGE 2 -->
+  <div class="card hidden" id="page2">
+    <div class="title">अपनी वर्तमान स्थिति चुनें</div>
+    <button class="option" onclick="showResult(0)">अपनी अनुसार / Neutral</button>
+    <button class="option" onclick="showResult(1)">मन भारी / उलझा हुआ</button>
+    <button class="option" onclick="showResult(2)">मन तेज / बेचैन</button>
+  </div>
 
-<!-- TOOL PAGE -->
-<div class="page" id="tool">
-<h1 id="toolTitle"></h1>
-<div id="toolBody"></div>
-<button class="secondary" onclick="goHome()">⬅ Back</button>
-</div>
+  <!-- PAGE 3 -->
+  <div class="card hidden" id="page3">
+    <div class="section">
+      <h4 id="freqLabel"></h4>
+    </div>
 
+    <div class="section">
+      <h4>Technical Insight</h4>
+      <p id="techText"></p>
+    </div>
+
+    <div class="section">
+      <h4>Awareness Insight</h4>
+      <p id="gyanText"></p>
+    </div>
+
+    <div class="section">
+      <h4>Gentle Guidance</h4>
+      <p id="guideText"></p>
+    </div>
+
+    <button class="option" onclick="goPage(1)">Check Again</button>
+  </div>
+
+  <div class="footer">Frequency is not emotion. It is signal.</div>
 </div>
 
 <script>
-let decisionOptions=["हाँ","नहीं","अभी नहीं","बाद में"];
+function goPage(n){
+  ["page1","page2","page3"].forEach(p=>{
+    document.getElementById(p).classList.add("hidden");
+  });
+  document.getElementById("page"+n).classList.remove("hidden");
+}
 
-function openTool(t){
- home.classList.remove("active");
- tool.classList.add("active");
+function pick(arr){
+  return arr[Math.floor(Math.random()*arr.length)];
+}
 
- if(t==="wheel"){
-  toolTitle.innerText="🔄 Spin Decision Wheel";
-  toolBody.innerHTML=`
-   <div class="pointer">⬆️</div>
-   <div class="wheel" id="wheel">SPIN</div>
-   <button class="primary" onclick="spin()">Spin करें</button>
-   <div id="out"></div>`;
- }
-
- else if(t==="lock"){
-  toolTitle.innerText="🔒 Decision Lock";
-  let saved=JSON.parse(localStorage.getItem("decisionLock"));
-  if(saved && Date.now()<saved.until){
-   toolBody.innerHTML=`
-    <div class="lockBox">
-     🔐 Locked Decision:<br><br>
-     <strong>${saved.text}</strong><br><br>
-     ⏳ Unlock होगा: ${new Date(saved.until).toLocaleString()}
-    </div>`;
-  }else{
-   toolBody.innerHTML=`
-    <textarea id="dtext" placeholder="अपना निर्णय लिखें..."></textarea>
-    <button class="primary" onclick="lockDecision()">Decision Lock करें</button>`;
+const data = [
+  {
+    label:"Current Frequency: Neutral / Mixed",
+    tech:[
+      "This state indicates moderate cognitive load where attention is active but not overloaded.",
+      "Neurologically, this reflects a balanced interaction between focus and background processing.",
+      "This frequency often appears during transitions between tasks or thoughts."
+    ],
+    gyan:[
+      "यह अवस्था कोई समस्या नहीं है। यह बदलाव का संकेत है।",
+      "यहीं से स्पष्टता या भ्रम – दोनों की दिशा तय होती है।",
+      "Neutral होना stagnation नहीं, potential है।"
+    ],
+    guide:[
+      "इस समय observation को action से पहले रखें।",
+      "बड़े निर्णय टालना उपयोगी हो सकता है।",
+      "कुछ क्षण बस देखने दें, बदलने की ज़रूरत नहीं।"
+    ]
+  },
+  {
+    label:"Current Frequency: Heavy / Diffused",
+    tech:[
+      "This suggests fragmented attention caused by unresolved mental or emotional load.",
+      "The brain is processing multiple background loops, reducing present clarity.",
+      "Such states often arise from information overload rather than weakness."
+    ],
+    gyan:[
+      "भारीपन विरोध करने से नहीं, देखने से हल्का होता है।",
+      "यह संकेत है कि system अधिक उठा रहा है।",
+      "हर बोझ को तुरंत उतारना आवश्यक नहीं।"
+    ],
+    guide:[
+      "इस अवस्था में खुद से अपेक्षा कम रखें।",
+      "अभी समाधान नहीं, space ज़्यादा उपयोगी है।",
+      "थोड़ा slowing down पूरी दिशा बदल सकता है।"
+    ]
+  },
+  {
+    label:"Current Frequency: Overactive / High Noise",
+    tech:[
+      "This reflects high stimulation and rapid thought-switching patterns.",
+      "Attention is reactive, not settled, leading to internal noise.",
+      "The system is fast, but not grounded."
+    ],
+    gyan:[
+      "तेज़ी हमेशा स्पष्टता नहीं लाती।",
+      "Noise भी एक signal है, शत्रु नहीं।",
+      "रुकना हार नहीं, recalibration है।"
+    ],
+    guide:[
+      "इस समय speed नहीं, grounding सहायक है।",
+      "एक छोटा pause पूरे loop को बदल सकता है।",
+      "कम input ज़्यादा clarity ला सकता है।"
+    ]
   }
- }
+];
 
- else{
-  toolTitle.innerText="Tool";
-  toolBody.innerHTML="<div class='small'>Simple calculator tool</div>";
- }
-}
-
-function spin(){
- let pick=Math.floor(Math.random()*decisionOptions.length);
- let result=decisionOptions[pick];
- document.getElementById("out").innerHTML=
- `<div class="result">👉 निर्णय: ${result}</div>`;
-}
-
-function lockDecision(){
- let text=document.getElementById("dtext").value.trim();
- if(!text){alert("निर्णय लिखें");return;}
- let until=Date.now()+24*60*60*1000;
- localStorage.setItem("decisionLock",JSON.stringify({text,until}));
- alert("निर्णय 24 घंटे के लिए Lock हो गया 🔒");
- goHome();
-}
-
-function goHome(){
- tool.classList.remove("active");
- home.classList.add("active");
+function showResult(i){
+  const d = data[i];
+  document.getElementById("freqLabel").innerText = d.label;
+  document.getElementById("techText").innerText = pick(d.tech);
+  document.getElementById("gyanText").innerText = pick(d.gyan);
+  document.getElementById("guideText").innerText = pick(d.guide);
+  goPage(3);
 }
 </script>
 
