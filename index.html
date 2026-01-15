@@ -1,148 +1,320 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>ANTAR DARPAN</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Priority Calculator</title>
 
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(180deg, #0B1020, #050814);
-      color: #FFFFFF;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-    }
+<style>
+body{
+  margin:0;
+  font-family:system-ui,Arial;
+  background:#0f172a;
+  color:#fff;
+  display:flex;
+  justify-content:center;
+}
+.app{
+  width:100%;
+  max-width:420px;
+  min-height:100vh;
+  padding:18px;
+}
+.page{display:none}
+.page.active{display:block}
 
-    .container {
-      max-width: 640px;
-      margin: auto;
-      padding: 24px;
-    }
+header{
+  text-align:center;
+  font-size:22px;
+  font-weight:600;
+  margin-bottom:8px;
+}
 
-    h1 {
-      text-align: center;
-      font-size: 28px;
-      margin-bottom: 6px;
-      letter-spacing: 1px;
-    }
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:8px;
+}
 
-    .tagline {
-      text-align: center;
-      font-size: 15px;
-      color: #CCCCCC;
-      margin-bottom: 28px;
-    }
+.langBtn{
+  font-size:13px;
+  padding:6px 12px;
+  border-radius:14px;
+  background:#1e293b;
+  border:none;
+  color:#fff;
+  cursor:pointer;
+}
 
-    textarea {
-      width: 100%;
-      height: 160px;
-      padding: 16px;
-      font-size: 16px;
-      line-height: 1.6;
-      border-radius: 12px;
-      border: none;
-      outline: none;
-      resize: none;
-      box-sizing: border-box;
-    }
+.card{
+  background:#1e293b;
+  border-radius:16px;
+  padding:16px;
+  margin-bottom:14px;
+}
 
-    textarea::placeholder {
-      color: #888888;
-    }
+input,select{
+  width:100%;
+  padding:12px;
+  margin-top:8px;
+  border-radius:10px;
+  border:none;
+  font-size:16px;
+}
 
-    button {
-      width: 100%;
-      margin-top: 22px;
-      padding: 16px;
-      font-size: 17px;
-      font-weight: 600;
-      border-radius: 28px;
-      border: none;
-      background: linear-gradient(90deg, #6A4CFF, #4B2BFF);
-      color: #FFFFFF;
-      cursor: pointer;
-    }
+.task{margin-bottom:14px}
 
-    button:active {
-      opacity: 0.9;
-    }
+button{
+  width:100%;
+  padding:14px;
+  font-size:17px;
+  border:none;
+  border-radius:28px;
+  background:linear-gradient(45deg,#38bdf8,#4ade80);
+  color:#020617;
+  margin-top:18px;
+  cursor:pointer;
+}
 
-    .output {
-      display: none;
-      margin-top: 26px;
-      padding: 18px;
-      border-radius: 14px;
-      background: rgba(255, 255, 255, 0.06);
-      font-size: 16px;
-      line-height: 1.7;
-    }
+.spinBox{
+  text-align:center;
+  font-size:22px;
+  margin-top:40px;
+  animation:spin 1.4s infinite linear;
+}
+@keyframes spin{
+  from{transform:rotate(0deg)}
+  to{transform:rotate(360deg)}
+}
 
-    .divider {
-      margin: 14px 0;
-      height: 1px;
-      background: rgba(255, 255, 255, 0.15);
-    }
+.resultTask{
+  font-size:18px;
+  padding:10px;
+  border-bottom:1px solid rgba(255,255,255,.2);
+}
+.fade{opacity:.4}
 
-    .footer {
-      margin-top: 32px;
-      text-align: center;
-      font-size: 12px;
-      color: #999999;
-      line-height: 1.5;
-    }
-  </style>
+.small{
+  font-size:14px;
+  opacity:.7;
+  text-align:center;
+  margin-top:10px;
+}
+
+.toggle{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:15px;
+  margin-bottom:10px;
+}
+
+.streak{
+  text-align:center;
+  font-size:14px;
+  opacity:.8;
+  margin-bottom:10px;
+}
+</style>
 </head>
 
 <body>
+<div class="app">
 
-  <div class="container">
+<!-- PAGE 1 -->
+<div class="page active" id="page1">
 
-    <h1>ANTAR DARPAN</h1>
-    <div class="tagline">एक प्रश्न नहीं — एक दर्पण</div>
+<div class="topbar">
+  <div id="title">📅 Daily Priority Calculator</div>
+  <button class="langBtn" onclick="toggleLang()">HI / EN</button>
+</div>
 
-    <textarea id="userInput" placeholder="2–3 पंक्तियों में अपनी वर्तमान स्थिति लिखें…  
-बिना सजाए, बिना सोचे।"></textarea>
+<div class="streak" id="streakBox"></div>
 
-    <button onclick="showReflection()">स्थिति देखें</button>
+<div class="card toggle">
+  <span id="studentLabel">🎓 Student Mode</span>
+  <input type="checkbox" id="studentMode">
+</div>
 
-    <div id="result" class="output"></div>
+<div id="tasks"></div>
 
-    <div class="footer">
-      यह ऐप सलाह, निदान या उपचार नहीं देता।<br>
-      यह केवल आत्म-अवलोकन हेतु है।
-    </div>
+<button onclick="goSpin()" id="calcBtn">Calculate Today</button>
+<div class="small" id="limitText">One calculation per day</div>
+</div>
 
-  </div>
+<!-- PAGE 2 -->
+<div class="page" id="page2">
+<header id="calcTitle">🎡 Calculating…</header>
+<div class="spinBox">⏳</div>
+</div>
 
-  <script>
-    function showReflection() {
-      const text = document.getElementById("userInput").value.trim();
-      if (text.length < 5) {
-        alert("कृपया कुछ शब्द लिखें।");
-        return;
+<!-- PAGE 3 -->
+<div class="page" id="page3">
+<header id="resultTitle">✅ Today’s Focus</header>
+
+<div class="card">
+  <strong id="doToday">DO TODAY</strong>
+  <div id="doList"></div>
+</div>
+
+<div class="card fade">
+  <strong id="holdLater">HOLD FOR LATER</strong>
+  <div id="holdList"></div>
+</div>
+
+<button onclick="finishDay()" id="doneBtn">Done</button>
+</div>
+
+</div>
+
+<script>
+/* ---------- LANGUAGE ---------- */
+let lang = localStorage.getItem("lang") || "en";
+
+const TEXT={
+  en:{
+    title:"📅 Daily Priority Calculator",
+    student:"🎓 Student Mode",
+    calc:"Calculate Today",
+    limit:"One calculation per day",
+    calcTitle:"🎡 Calculating…",
+    result:"✅ Today’s Focus",
+    do:"DO TODAY",
+    hold:"HOLD FOR LATER",
+    done:"Done",
+    streak:"🏆 Streak"
+  },
+  hi:{
+    title:"📅 दैनिक प्राथमिकता कैलकुलेटर",
+    student:"🎓 छात्र मोड",
+    calc:"आज गणना करें",
+    limit:"दिन में केवल एक बार",
+    calcTitle:"🎡 गणना हो रही है…",
+    result:"✅ आज का फोकस",
+    do:"आज करें",
+    hold:"बाद में करें",
+    done:"समाप्त",
+    streak:"🏆 लगातार दिन"
+  }
+};
+
+function applyLang(){
+  const t=TEXT[lang];
+  title.innerText=t.title;
+  studentLabel.innerText=t.student;
+  calcBtn.innerText=t.calc;
+  limitText.innerText=t.limit;
+  calcTitle.innerText=t.calcTitle;
+  resultTitle.innerText=t.result;
+  doToday.innerText=t.do;
+  holdLater.innerText=t.hold;
+  doneBtn.innerText=t.done;
+
+  if(streak>0){
+    streakBox.innerText=`${t.streak}: ${streak}`;
+  }
+}
+
+function toggleLang(){
+  lang = lang==="en"?"hi":"en";
+  localStorage.setItem("lang",lang);
+  applyLang();
+}
+
+/* ---------- DATE + STREAK ---------- */
+const today=new Date();
+const todayKey=today.toDateString();
+const yesterdayKey=new Date(today-86400000).toDateString();
+
+let streak=parseInt(localStorage.getItem("streak")||"0");
+const lastDay=localStorage.getItem("lastDay");
+
+if(lastDay===yesterdayKey){
+}else if(lastDay!==todayKey){
+  streak=0;
+}
+
+if(streak>0){
+  streakBox.innerText=`${TEXT[lang].streak}: ${streak}`;
+}
+
+/* ---------- DAILY LOCK ---------- */
+if(localStorage.getItem("usedDay")===todayKey){
+  document.body.innerHTML=
+  "<div style='padding:40px;text-align:center;font-size:18px;color:white'>🔒 Today already calculated<br><br>Come back tomorrow.</div>";
+}
+
+/* ---------- TASK INPUT ---------- */
+for(let i=1;i<=5;i++){
+  tasks.innerHTML+=`
+  <div class="task">
+    <input placeholder="Task ${i}">
+    <select>
+      <option value="1">Low Effort</option>
+      <option value="1.5">Medium Effort</option>
+      <option value="2">High Effort</option>
+    </select>
+    <input type="number" placeholder="Minutes" min="1">
+  </div>`;
+}
+
+/* ---------- CALC ---------- */
+function goSpin(){
+  const rows=[...document.querySelectorAll(".task")];
+  const student=studentMode.checked;
+  let list=[];
+
+  rows.forEach(r=>{
+    const name=r.children[0].value.trim();
+    const effort=parseFloat(r.children[1].value);
+    const time=parseInt(r.children[2].value);
+
+    if(name && time){
+      let score=time*effort;
+      if(student){
+        const study=["study","read","exam","revision","homework","class","notes","पढ़"];
+        const low=name.toLowerCase();
+        score*=study.some(w=>low.includes(w))?1.15:0.95;
       }
-
-      const output = `
-        <strong>आपकी वर्तमान स्थिति</strong>
-        <div class="divider"></div>
-        आपके शब्द यह संकेत देते हैं कि इस समय भीतर गति है,
-        पर स्पष्ट दिशा अभी प्रकट नहीं हुई है।
-        <br><br>
-        <strong>Zero Quantum Frequency™</strong>
-        <div class="divider"></div>
-        Frequency भावना नहीं है —  
-        यह उस अवस्था का संकेत है जहाँ मन प्रतिक्रिया करता है।
-        <br><br>
-        इस क्षण प्रयास नहीं,  
-        केवल देखना ही पर्याप्त है।
-      `;
-
-      const resultDiv = document.getElementById("result");
-      resultDiv.innerHTML = output;
-      resultDiv.style.display = "block";
+      score+=score*(Math.random()*0.2);
+      list.push({name,score});
     }
-  </script>
+  });
+
+  if(list.length<2){alert("Enter at least 2 tasks");return;}
+
+  localStorage.setItem("tasks",JSON.stringify(list));
+  localStorage.setItem("usedDay",todayKey);
+
+  page1.classList.remove("active");
+  page2.classList.add("active");
+  setTimeout(showResult,2200);
+}
+
+function showResult(){
+  const list=JSON.parse(localStorage.getItem("tasks"));
+  list.sort((a,b)=>b.score-a.score);
+  doList.innerHTML="";holdList.innerHTML="";
+  list.forEach((t,i)=>{
+    const d=document.createElement("div");
+    d.className="resultTask";
+    d.innerText=t.name;
+    (i<2?doList:holdList).appendChild(d);
+  });
+  page2.classList.remove("active");
+  page3.classList.add("active");
+}
+
+function finishDay(){
+  streak = lastDay===yesterdayKey ? streak+1 : 1;
+  localStorage.setItem("streak",streak);
+  localStorage.setItem("lastDay",todayKey);
+  location.reload();
+}
+
+applyLang();
+</script>
 
 </body>
 </html>
