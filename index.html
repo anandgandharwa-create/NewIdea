@@ -45,11 +45,12 @@ button{
   cursor:pointer;
 }
 
+/* COMPASS */
 .compass-box{
   position:relative;
   width:260px;
   height:260px;
-  margin:60px auto 30px;
+  margin:40px auto 20px;
 }
 .compass{
   width:100%;
@@ -62,30 +63,35 @@ button{
       #facc15 180deg 270deg,
       #fb7185 270deg 360deg
     );
+  position:relative;
   display:flex;
   align-items:center;
   justify-content:center;
   font-weight:700;
-  transition:transform 4s cubic-bezier(.17,.67,.14,.93);
+
+  /* IMPORTANT */
+  transition:transform 2.2s cubic-bezier(.15,.85,.25,1);
+  will-change: transform;
 }
+
 .label{
   position:absolute;
   font-size:14px;
   font-weight:600;
 }
-.n{top:8px;left:50%;transform:translateX(-50%)}
-.e{right:8px;top:50%;transform:translateY(-50%)}
-.s{bottom:8px;left:50%;transform:translateX(-50%)}
-.w{left:8px;top:50%;transform:translateY(-50%)}
+.n{top:6px;left:50%;transform:translateX(-50%)}
+.e{right:6px;top:50%;transform:translateY(-50%)}
+.s{bottom:6px;left:50%;transform:translateX(-50%)}
+.w{left:6px;top:50%;transform:translateY(-50%)}
 
 .pointer{
   position:absolute;
-  top:-14px;
+  top:-16px;
   left:50%;
   transform:translateX(-50%);
   border-left:12px solid transparent;
   border-right:12px solid transparent;
-  border-bottom:22px solid #fff;
+  border-bottom:26px solid #fff;
 }
 
 .result{
@@ -135,30 +141,26 @@ button{
 </div>
 
 <script>
-const compass=document.getElementById("compass");
-const dirText=document.getElementById("directionText");
-const insText=document.getElementById("instructionText");
+const compass = document.getElementById("compass");
+const dirText = document.getElementById("directionText");
+const insText = document.getElementById("instructionText");
 
-const directions=[
+const directions = [
   {
     name:"NORTH",
-    meaning:"Stability & Responsibility",
-    instruction:"Choose the option that is safe, structured, and long-term. Today is not for risk or experimentation. What sustains you matters more than what excites you."
+    instruction:"Choose the option that is safe, structured, and long-term. Today is about stability, not experimentation."
   },
   {
     name:"EAST",
-    meaning:"Growth & Newness",
-    instruction:"Choose the option that brings learning, expansion, or a new beginning. Even if it feels unfamiliar, movement towards growth is favoured today."
+    instruction:"Choose the option that brings learning, growth, or something new. Expansion is favoured today."
   },
   {
     name:"SOUTH",
-    meaning:"Action & Courage",
-    instruction:"Choose the option that requires boldness. Waiting will only increase confusion. Today rewards decisive action more than perfect planning."
+    instruction:"Choose the option that demands courage and action. Waiting will increase confusion."
   },
   {
     name:"WEST",
-    meaning:"Release & Closure",
-    instruction:"Choose the option that lets something end. Letting go is not loss today — it is alignment. What is heavy should be dropped."
+    instruction:"Choose the option that allows closure or release. Letting go is alignment today."
   }
 ];
 
@@ -166,16 +168,24 @@ function startCompass(){
   page1.classList.remove("active");
   page2.classList.add("active");
 
-  const pick=Math.floor(Math.random()*4);
-  const angle=360*3 + pick*90 + 45;
+  // reset rotation so repeated tests work
+  compass.style.transform = "rotate(0deg)";
 
-  compass.style.transform="rotate("+angle+"deg)";
+  // force reflow
+  compass.offsetHeight;
+
+  const pick = Math.floor(Math.random() * 4);
+
+  /* 🔥 FAST + REAL SPIN 🔥
+     6 full rotations + target sector */
+  const finalAngle = (360 * 6) + (pick * 90) + 45;
+
+  compass.style.transform = `rotate(${finalAngle}deg)`;
 
   setTimeout(()=>{
-    const d=directions[pick];
-    dirText.innerText="Direction: "+d.name;
-    insText.innerText=d.instruction;
-  },4000);
+    dirText.innerText = "Direction: " + directions[pick].name;
+    insText.innerText = directions[pick].instruction;
+  },2200);
 }
 </script>
 
