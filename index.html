@@ -8,17 +8,22 @@
 
 <style>
 :root{
-  --primary:#4f46e5;
-  --secondary:#22c55e;
-  --bg:#f5f7fb;
-  --card:#ffffff;
-  --text:#1f2937;
+  --primary:#3b82f6;
+  --secondary:#22d3ee;
+  --bg:#0b1220;
+  --card:#111827;
+  --border:#1f2937;
+  --text:#e5e7eb;
+  --muted:#9ca3af;
+  --success:#22c55e;
+  --warning:#facc15;
+  --danger:#ef4444;
 }
 
 body{
   margin:0;
   padding:0;
-  background:var(--bg);
+  background:linear-gradient(180deg,#020617,#0b1220);
   font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   color:var(--text);
 }
@@ -31,87 +36,98 @@ body{
 
 .card{
   background:var(--card);
-  border-radius:18px;
+  border-radius:20px;
   padding:22px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.08);
+  box-shadow:0 20px 40px rgba(0,0,0,0.6);
+  border:1px solid var(--border);
 }
 
 h1{
   font-size:26px;
   text-align:center;
-  margin-bottom:8px;
+  margin-bottom:6px;
+  color:#e0f2fe;
 }
 
 .subtitle{
   text-align:center;
   font-size:15px;
-  opacity:0.8;
-  margin-bottom:20px;
+  color:var(--muted);
+  margin-bottom:22px;
 }
 
 label{
   font-size:15px;
   font-weight:600;
   display:block;
-  margin-top:14px;
+  margin-top:16px;
+  color:#c7d2fe;
 }
 
 select{
   width:100%;
-  padding:14px;
+  padding:15px;
   font-size:17px;
-  border-radius:12px;
-  border:1px solid #d1d5db;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background:#020617;
+  color:var(--text);
   margin-top:6px;
+}
+
+select:focus{
+  outline:none;
+  border-color:var(--primary);
 }
 
 button{
   width:100%;
-  margin-top:22px;
+  margin-top:26px;
   padding:16px;
   font-size:18px;
-  font-weight:700;
+  font-weight:800;
   border:none;
-  border-radius:14px;
-  background:linear-gradient(135deg,var(--primary),#6366f1);
-  color:#fff;
+  border-radius:16px;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  color:#020617;
 }
 
 button:active{
-  transform:scale(0.98);
+  transform:scale(0.97);
 }
 
 .result{
-  margin-top:24px;
-  padding:20px;
-  border-radius:16px;
-  background:#f0fdf4;
+  margin-top:26px;
+  padding:22px;
+  border-radius:18px;
+  background:linear-gradient(180deg,#020617,#020617);
+  border:1px solid var(--border);
   display:none;
 }
 
 .score{
-  font-size:36px;
-  font-weight:800;
-  color:var(--secondary);
+  font-size:38px;
+  font-weight:900;
   text-align:center;
 }
 
 .level{
   text-align:center;
   font-size:18px;
-  margin-bottom:12px;
+  margin:10px 0 14px;
 }
 
 .tips{
   font-size:15px;
-  line-height:1.6;
+  line-height:1.7;
+  color:#dbeafe;
 }
 
 .footer{
   text-align:center;
   font-size:13px;
-  opacity:0.6;
-  margin-top:20px;
+  color:var(--muted);
+  margin-top:22px;
 }
 </style>
 </head>
@@ -122,39 +138,39 @@ button:active{
   <div class="card">
 
     <h1>📊 Reel Performance Predictor</h1>
-    <div class="subtitle">Reel डालने से पहले जानिए – चलेगी या नहीं</div>
+    <div class="subtitle">Reel डालने से पहले smart analysis करें</div>
 
     <label>Reel Category</label>
     <select id="category">
-      <option value="10">Motivation</option>
+      <option value="12">Motivation</option>
       <option value="15">Business</option>
-      <option value="12">Funny</option>
-      <option value="8">General</option>
+      <option value="14">Funny</option>
+      <option value="10">General</option>
     </select>
 
     <label>Reel Duration</label>
     <select id="duration">
-      <option value="20">7–10 सेकंड</option>
+      <option value="22">7–10 सेकंड</option>
       <option value="15">11–20 सेकंड</option>
       <option value="8">21–30 सेकंड</option>
     </select>
 
     <label>Music Type</label>
     <select id="music">
-      <option value="20">Trending Music</option>
-      <option value="10">Normal Music</option>
+      <option value="22">Trending Music</option>
+      <option value="12">Normal Music</option>
       <option value="5">No Music</option>
     </select>
 
     <label>Posting Time</label>
     <select id="time">
-      <option value="20">शाम (6–9)</option>
-      <option value="12">सुबह</option>
-      <option value="10">दोपहर</option>
-      <option value="8">रात</option>
+      <option value="22">शाम (6–9)</option>
+      <option value="14">सुबह</option>
+      <option value="12">दोपहर</option>
+      <option value="10">रात</option>
     </select>
 
-    <button onclick="predict()">🔍 Performance Check करें</button>
+    <button onclick="predict()">🚀 Reel Check करें</button>
 
     <div class="result" id="resultBox">
       <div class="score" id="scoreText">0</div>
@@ -165,7 +181,7 @@ button:active{
   </div>
 
   <div class="footer">
-    AI Prediction नहीं, Smart Analysis ✔
+    ⚠️ यह AI prediction नहीं, data-based smart scoring है
   </div>
 </div>
 
@@ -179,21 +195,24 @@ function predict(){
 
   if(score > 100) score = 100;
 
-  let level = "Low";
-  let tips = "";
+  let level="", tips="", color="";
 
   if(score >= 75){
-    level = "High 🔥";
-    tips = "✔ Reel में strong hook है<br>✔ Posting time सही है<br>✔ Viral होने की अच्छी संभावना";
+    level="High 🔥";
+    tips="✔ Hook strong है<br>✔ Music trend में है<br>✔ Viral chance high है";
+    color="#22c55e";
   } else if(score >= 50){
-    level = "Medium ⚠️";
-    tips = "✔ Hook को और बेहतर बनाएं<br>✔ Duration 10 सेकंड के आस-पास रखें";
+    level="Medium ⚠️";
+    tips="✔ Hook और sharp करें<br>✔ Duration 10 सेकंड के आसपास रखें";
+    color="#facc15";
   } else {
-    level = "Low ❌";
-    tips = "✔ Trending music जोड़ें<br>✔ Reel छोटा रखें<br>✔ शाम को पोस्ट करें";
+    level="Low ❌";
+    tips="✔ Trending music जोड़ें<br>✔ Reel छोटा रखें<br>✔ शाम को पोस्ट करें";
+    color="#ef4444";
   }
 
   document.getElementById("scoreText").innerText = score + "/100";
+  document.getElementById("scoreText").style.color = color;
   document.getElementById("levelText").innerText = "Viral Chance: " + level;
   document.getElementById("tipsText").innerHTML = tips;
   document.getElementById("resultBox").style.display = "block";
