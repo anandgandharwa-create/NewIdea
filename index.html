@@ -1,191 +1,202 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Decision Compass</title>
+
+<title>Reel Performance Predictor</title>
 
 <style>
+:root{
+  --primary:#4f46e5;
+  --secondary:#22c55e;
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --text:#1f2937;
+}
+
 body{
   margin:0;
-  font-family:system-ui, Arial;
-  background:radial-gradient(circle at top,#0f172a,#020617);
-  color:#fff;
-  display:flex;
-  justify-content:center;
+  padding:0;
+  background:var(--bg);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  color:var(--text);
 }
-.app{
-  width:100%;
-  max-width:420px;
-  min-height:100vh;
+
+.container{
+  max-width:480px;
+  margin:auto;
   padding:20px;
-  text-align:center;
 }
-.page{display:none}
-.page.active{display:block}
+
+.card{
+  background:var(--card);
+  border-radius:18px;
+  padding:22px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.08);
+}
 
 h1{
   font-size:26px;
-  margin-top:60px;
+  text-align:center;
+  margin-bottom:8px;
 }
+
 .subtitle{
-  font-size:16px;
-  opacity:.8;
-  margin-top:10px;
+  text-align:center;
+  font-size:15px;
+  opacity:0.8;
+  margin-bottom:20px;
+}
+
+label{
+  font-size:15px;
+  font-weight:600;
+  display:block;
+  margin-top:14px;
+}
+
+select{
+  width:100%;
+  padding:14px;
+  font-size:17px;
+  border-radius:12px;
+  border:1px solid #d1d5db;
+  margin-top:6px;
 }
 
 button{
-  margin-top:40px;
-  padding:16px 28px;
-  font-size:18px;
-  border:none;
-  border-radius:30px;
-  background:linear-gradient(45deg,#38bdf8,#4ade80);
-  color:#020617;
-  cursor:pointer;
-}
-
-/* COMPASS */
-.compass-box{
-  position:relative;
-  width:260px;
-  height:260px;
-  margin:40px auto 20px;
-}
-.compass{
   width:100%;
-  height:100%;
-  border-radius:50%;
-  background:
-    conic-gradient(
-      #38bdf8 0deg 90deg,
-      #4ade80 90deg 180deg,
-      #facc15 180deg 270deg,
-      #fb7185 270deg 360deg
-    );
-  position:relative;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  margin-top:22px;
+  padding:16px;
+  font-size:18px;
   font-weight:700;
-
-  /* IMPORTANT */
-  transition:transform 2.2s cubic-bezier(.15,.85,.25,1);
-  will-change: transform;
+  border:none;
+  border-radius:14px;
+  background:linear-gradient(135deg,var(--primary),#6366f1);
+  color:#fff;
 }
 
-.label{
-  position:absolute;
-  font-size:14px;
-  font-weight:600;
-}
-.n{top:6px;left:50%;transform:translateX(-50%)}
-.e{right:6px;top:50%;transform:translateY(-50%)}
-.s{bottom:6px;left:50%;transform:translateX(-50%)}
-.w{left:6px;top:50%;transform:translateY(-50%)}
-
-.pointer{
-  position:absolute;
-  top:-16px;
-  left:50%;
-  transform:translateX(-50%);
-  border-left:12px solid transparent;
-  border-right:12px solid transparent;
-  border-bottom:26px solid #fff;
+button:active{
+  transform:scale(0.98);
 }
 
 .result{
-  margin-top:20px;
-  font-size:22px;
-  font-weight:600;
+  margin-top:24px;
+  padding:20px;
+  border-radius:16px;
+  background:#f0fdf4;
+  display:none;
 }
-.instruction{
-  margin-top:14px;
-  font-size:16px;
+
+.score{
+  font-size:36px;
+  font-weight:800;
+  color:var(--secondary);
+  text-align:center;
+}
+
+.level{
+  text-align:center;
+  font-size:18px;
+  margin-bottom:12px;
+}
+
+.tips{
+  font-size:15px;
   line-height:1.6;
-  opacity:.9;
+}
+
+.footer{
+  text-align:center;
+  font-size:13px;
+  opacity:0.6;
+  margin-top:20px;
 }
 </style>
 </head>
 
 <body>
-<div class="app">
 
-<!-- PAGE 1 -->
-<div class="page active" id="page1">
-  <h1>🧭 Decision Compass</h1>
-  <div class="subtitle">
-    When you can’t decide — don’t guess.<br>Align.
-  </div>
-  <button onclick="startCompass()">Find My Direction</button>
-</div>
+<div class="container">
+  <div class="card">
 
-<!-- PAGE 2 -->
-<div class="page" id="page2">
-  <div class="compass-box">
-    <div class="pointer"></div>
-    <div class="compass" id="compass">
-      <div class="label n">NORTH</div>
-      <div class="label e">EAST</div>
-      <div class="label s">SOUTH</div>
-      <div class="label w">WEST</div>
+    <h1>📊 Reel Performance Predictor</h1>
+    <div class="subtitle">Reel डालने से पहले जानिए – चलेगी या नहीं</div>
+
+    <label>Reel Category</label>
+    <select id="category">
+      <option value="10">Motivation</option>
+      <option value="15">Business</option>
+      <option value="12">Funny</option>
+      <option value="8">General</option>
+    </select>
+
+    <label>Reel Duration</label>
+    <select id="duration">
+      <option value="20">7–10 सेकंड</option>
+      <option value="15">11–20 सेकंड</option>
+      <option value="8">21–30 सेकंड</option>
+    </select>
+
+    <label>Music Type</label>
+    <select id="music">
+      <option value="20">Trending Music</option>
+      <option value="10">Normal Music</option>
+      <option value="5">No Music</option>
+    </select>
+
+    <label>Posting Time</label>
+    <select id="time">
+      <option value="20">शाम (6–9)</option>
+      <option value="12">सुबह</option>
+      <option value="10">दोपहर</option>
+      <option value="8">रात</option>
+    </select>
+
+    <button onclick="predict()">🔍 Performance Check करें</button>
+
+    <div class="result" id="resultBox">
+      <div class="score" id="scoreText">0</div>
+      <div class="level" id="levelText"></div>
+      <div class="tips" id="tipsText"></div>
     </div>
+
   </div>
 
-  <div class="result" id="directionText"></div>
-  <div class="instruction" id="instructionText"></div>
-
-  <button onclick="location.reload()">Done</button>
-</div>
-
+  <div class="footer">
+    AI Prediction नहीं, Smart Analysis ✔
+  </div>
 </div>
 
 <script>
-const compass = document.getElementById("compass");
-const dirText = document.getElementById("directionText");
-const insText = document.getElementById("instructionText");
+function predict(){
+  let score = 0;
+  score += parseInt(category.value);
+  score += parseInt(duration.value);
+  score += parseInt(music.value);
+  score += parseInt(time.value);
 
-const directions = [
-  {
-    name:"NORTH",
-    instruction:"Choose the option that is safe, structured, and long-term. Today is about stability, not experimentation."
-  },
-  {
-    name:"EAST",
-    instruction:"Choose the option that brings learning, growth, or something new. Expansion is favoured today."
-  },
-  {
-    name:"SOUTH",
-    instruction:"Choose the option that demands courage and action. Waiting will increase confusion."
-  },
-  {
-    name:"WEST",
-    instruction:"Choose the option that allows closure or release. Letting go is alignment today."
+  if(score > 100) score = 100;
+
+  let level = "Low";
+  let tips = "";
+
+  if(score >= 75){
+    level = "High 🔥";
+    tips = "✔ Reel में strong hook है<br>✔ Posting time सही है<br>✔ Viral होने की अच्छी संभावना";
+  } else if(score >= 50){
+    level = "Medium ⚠️";
+    tips = "✔ Hook को और बेहतर बनाएं<br>✔ Duration 10 सेकंड के आस-पास रखें";
+  } else {
+    level = "Low ❌";
+    tips = "✔ Trending music जोड़ें<br>✔ Reel छोटा रखें<br>✔ शाम को पोस्ट करें";
   }
-];
 
-function startCompass(){
-  page1.classList.remove("active");
-  page2.classList.add("active");
-
-  // reset rotation so repeated tests work
-  compass.style.transform = "rotate(0deg)";
-
-  // force reflow
-  compass.offsetHeight;
-
-  const pick = Math.floor(Math.random() * 4);
-
-  /* 🔥 FAST + REAL SPIN 🔥
-     6 full rotations + target sector */
-  const finalAngle = (360 * 6) + (pick * 90) + 45;
-
-  compass.style.transform = `rotate(${finalAngle}deg)`;
-
-  setTimeout(()=>{
-    dirText.innerText = "Direction: " + directions[pick].name;
-    insText.innerText = directions[pick].instruction;
-  },2200);
+  document.getElementById("scoreText").innerText = score + "/100";
+  document.getElementById("levelText").innerText = "Viral Chance: " + level;
+  document.getElementById("tipsText").innerHTML = tips;
+  document.getElementById("resultBox").style.display = "block";
 }
 </script>
 
