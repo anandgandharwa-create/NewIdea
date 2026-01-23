@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <title>अनुभूति चक्र</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      background: #020617;
+      color: white;
+      text-align: center;
+      font-family: sans-serif;
+      padding-top: 40px;
+    }
+
+    .wheel {
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      margin: 40px auto;
+      background: conic-gradient(
+        red, orange, yellow, green, cyan, blue, violet, red
+      );
+      transition: transform 3s ease-out;
+    }
+
+    button {
+      padding: 15px 30px;
+      font-size: 18px;
+      background: #22c55e;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>अब सोचिए मत…<br>केवल अनुभव कीजिए</h2>
+
+<div id="wheel" class="wheel"></div>
+
+<button onclick="spin()">SPIN</button>
+
+<script>
+  function spin() {
+    let rotation = Math.floor(Math.random() * 360) + 720;
+    document.getElementById("wheel").style.transform =
+      "rotate(" + rotation + "deg)";
+
+    setTimeout(() => {
+      window.location.href = "advice.html";
+    }, 3200);
+  }
+</script>
+
+</body>
+</html>
