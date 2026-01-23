@@ -3,12 +3,138 @@
 <head>
   <meta charset="UTF-8">
   <title>आपकी Frequency</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body{
+      margin:0;
+      min-height:100vh;
+      background:linear-gradient(180deg,#020617,#020b2d);
+      color:#e5e7eb;
+      font-family:sans-serif;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:20px;
+    }
+    .box{
+      width:100%;
+      max-width:420px;
+      text-align:center;
+    }
+    h1{color:#38bdf8;margin-bottom:6px}
+    .sub{color:#94a3b8;font-size:14px;margin-bottom:30px}
+
+    .meter-wrap{
+      background:rgba(255,255,255,0.05);
+      border-radius:16px;
+      padding:30px 20px;
+    }
+
+    .label{color:#cbd5f5;margin-bottom:10px}
+
+    .track{
+      width:100%;
+      height:14px;
+      background:#020617;
+      border-radius:10px;
+      overflow:hidden;
+      box-shadow:inset 0 0 6px rgba(0,0,0,.6);
+    }
+    .fill{
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg,#22c55e,#38bdf8);
+      border-radius:10px;
+      transition:width 1.2s ease;
+    }
+
+    .value{
+      margin-top:14px;
+      font-size:22px;
+      color:#a7f3d0;
+    }
+
+    .hint{
+      margin-top:18px;
+      font-size:14px;
+      color:#94a3b8;
+      line-height:1.6;
+    }
+
+    button{
+      width:100%;
+      margin-top:30px;
+      padding:15px;
+      font-size:16px;
+      background:#22c55e;
+      border:none;
+      border-radius:12px;
+      cursor:pointer;
+      color:#020617;
+    }
+  </style>
 </head>
+
 <body>
-  <h1>आपकी वर्तमान स्थिति</h1>
-  <p>(Meter यहाँ आएगा)</p>
+
+<div class="box">
+  <h1>आपकी Frequency</h1>
+  <div class="sub">यह माप नहीं — एक संकेत है</div>
+
+  <div class="meter-wrap">
+    <div class="label">कर्तापन ⟶ द्रष्टा भाव</div>
+
+    <div class="track">
+      <div class="fill" id="fill"></div>
+    </div>
+
+    <div class="value" id="percent">0%</div>
+    <div class="hint" id="hint"></div>
+  </div>
+
+  <button onclick="location.href='spin.html'">
+    अनुभव की ओर बढ़ें
+  </button>
+</div>
+
+<script>
+/*
+  LOGIC:
+  A = 0 point (कर्तापन)
+  B = 1
+  C = 2
+  D = 3 (द्रष्टा / Zero के पास)
+*/
+
+let stored = localStorage.getItem("zqf_answers");
+let percent;
+
+// अगर answers मिले
+if(stored){
+  let answers = JSON.parse(stored);
+  let score = answers.reduce((a,b)=>a+b,0); // max 15
+  percent = Math.round((score/15)*100);
+}else{
+  // demo / fallback
+  percent = Math.floor(Math.random()*40)+30;
+}
+
+// UI apply
+document.getElementById("fill").style.width = percent+"%";
+document.getElementById("percent").innerText = percent+"%";
+
+// Meaning text
+let hintText="";
+if(percent < 30){
+  hintText="आप अभी मुख्यतः कर्तापन के स्तर पर हैं।";
+}else if(percent < 60){
+  hintText="आप देखने और करने के बीच के बिंदु पर हैं।";
+}else{
+  hintText="आप द्रष्टा भाव के क़रीब हैं।";
+}
+document.getElementById("hint").innerText = hintText;
+</script>
+
 </body>
 </html>
-<button onclick="location.href='spin.html'">
-  अनुभव की ओर बढ़ें
-</button>
