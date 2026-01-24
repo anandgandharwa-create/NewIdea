@@ -2,139 +2,133 @@
 <html lang="hi">
 <head>
   <meta charset="UTF-8">
-  <title>आपकी Frequency</title>
+  <title>Zero Quantum Frequency™ – Meter</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#020617">
 
   <style>
-    body{
-      margin:0;
-      min-height:100vh;
-      background:linear-gradient(180deg,#020617,#020b2d);
-      color:#e5e7eb;
-      font-family:sans-serif;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      padding:20px;
+    body {
+      background: linear-gradient(180deg,#020617,#020b2d);
+      color: #e5e7eb;
+      font-family: sans-serif;
+      padding: 20px;
+      text-align: center;
     }
-    .box{
-      width:100%;
-      max-width:420px;
-      text-align:center;
+    h1 {
+      color: #facc15;
+      margin-bottom: 10px;
     }
-    h1{color:#38bdf8;margin-bottom:6px}
-    .sub{color:#94a3b8;font-size:14px;margin-bottom:30px}
-
-    .meter-wrap{
-      background:rgba(255,255,255,0.05);
-      border-radius:16px;
-      padding:30px 20px;
+    .subtitle {
+      color: #94a3b8;
+      margin-bottom: 30px;
     }
-
-    .label{color:#cbd5f5;margin-bottom:10px}
-
-    .track{
-      width:100%;
-      height:14px;
-      background:#020617;
-      border-radius:10px;
-      overflow:hidden;
-      box-shadow:inset 0 0 6px rgba(0,0,0,.6);
+    .meter-box {
+      background: rgba(255,255,255,0.05);
+      padding: 30px;
+      border-radius: 16px;
+      margin-bottom: 30px;
     }
-   .fill{
-  height:100%;
-  width:0%;
-  border-radius:10px;
-  transition:width 1.2s ease, background 0.6s ease;
-}
-
-
-    .value{
-      margin-top:14px;
-      font-size:22px;
-      color:#a7f3d0;
+    .score {
+      font-size: 48px;
+      color: #22c55e;
+      margin: 20px 0;
     }
-
-    .hint{
-      margin-top:18px;
-      font-size:14px;
-      color:#94a3b8;
-      line-height:1.6;
+    .message {
+      font-size: 18px;
+      line-height: 1.6;
+      color: #e5e7eb;
     }
-
-    button{
-      width:100%;
-      margin-top:30px;
-      padding:15px;
-      font-size:16px;
-      background:#22c55e;
-      border:none;
-      border-radius:12px;
-      cursor:pointer;
-      color:#020617;
+    .lang button {
+      margin: 0 6px 20px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+    }
+    .btn {
+      margin-top: 30px;
+      padding: 14px 20px;
+      font-size: 16px;
+      background: #22c55e;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      color: #020617;
     }
   </style>
 </head>
 
 <body>
 
-<div class="box">
-  <h1>आपकी Frequency</h1>
-  <div class="sub">यह माप नहीं — एक संकेत है</div>
+<h1 data-key="title">Zero Quantum Frequency™</h1>
+<div class="subtitle" data-key="subtitle">आपका वर्तमान स्तर</div>
 
-  <div class="meter-wrap">
-    <div class="label">कर्तापन ⟶ द्रष्टा भाव</div>
-
-    <div class="track">
-      <div class="fill" id="fill"></div>
-    </div>
-
-    <div class="value" id="percent">0%</div>
-    <div class="hint" id="hint"></div>
-  </div>
-
-  <button onclick="location.href='spin.html'">
-    अनुभव की ओर बढ़ें
-  </button>
+<div class="lang">
+  <button onclick="setLang('hi')">हिन्दी</button>
+  <button onclick="setLang('en')">English</button>
 </div>
+
+<div class="meter-box">
+  <div class="score" id="score">0%</div>
+  <div class="message" id="message"></div>
+</div>
+
+<button class="btn" onclick="goBack()" data-key="back">पुनः प्रारंभ करें</button>
+
 <script>
-let stored = localStorage.getItem("zqf_answers");
-let percent = 0;
+/* 🌐 Language UI text */
+const uiText = {
+  hi: {
+    title: "Zero Quantum Frequency™",
+    subtitle: "आपका वर्तमान स्तर",
+    back: "पुनः प्रारंभ करें",
+    low: "आप अधिकतर प्रतिक्रिया से जी रहे हैं। अभी देखने की शुरुआत है।",
+    mid: "आप प्रतिक्रिया और साक्षी के बीच हैं। स्पष्टता बढ़ रही है।",
+    high: "आप अधिकतर साक्षी भाव में हैं। गहरी शांति उपलब्ध है।"
+  },
+  en: {
+    title: "Zero Quantum Frequency™",
+    subtitle: "Your current level",
+    back: "Restart",
+    low: "You are mostly living in reaction. Awareness is beginning.",
+    mid: "You are between reaction and witnessing. Clarity is growing.",
+    high: "You are mostly in witnessing. Deep calm is available."
+  }
+};
 
-if(stored){
-  let answers = JSON.parse(stored);
-  let score = answers.reduce((a,b)=>a+b,0); // max 15
-  percent = Math.round((score/15)*100);
+function setLang(lang) {
+  localStorage.setItem("lang", lang);
+  document.documentElement.lang = lang;
+
+  document.querySelectorAll("[data-key]").forEach(el => {
+    el.innerText = uiText[lang][el.dataset.key];
+  });
+
+  showResult();
 }
 
-let fill = document.getElementById("fill");
-let percentText = document.getElementById("percent");
-let hint = document.getElementById("hint");
+function showResult() {
+  const lang = localStorage.getItem("lang") || "hi";
+  const answers = JSON.parse(localStorage.getItem("zqf_answers")) || [];
 
-fill.style.width = percent + "%";
-percentText.innerText = percent + "%";
+  const total = answers.reduce((a,b) => a + b, 0);
+  const percent = Math.round((total / (answers.length * 3)) * 100);
 
-// 🔴🟡🟢 REAL LOGIC
-if(percent <= 33){
-  // RED – कर्तापन
-  fill.style.background = "linear-gradient(90deg,#dc2626,#f87171)";
-  hint.innerText =
-    "इस समय कर्तापन प्रभावी है। आप जीवन को करने वाले के रूप में अनुभव कर रहे हैं।";
+  document.getElementById("score").innerText = percent + "%";
+
+  let msg = uiText[lang].low;
+  if (percent > 40) msg = uiText[lang].mid;
+  if (percent > 70) msg = uiText[lang].high;
+
+  document.getElementById("message").innerText = msg;
 }
-else if(percent <= 66){
-  // YELLOW – संक्रमण
-  fill.style.background = "linear-gradient(90deg,#facc15,#fde047)";
-  hint.innerText =
-    "आप देखने और करने के बीच हैं। यही जागरूकता का द्वार है।";
+
+function goBack() {
+  window.location.href = "index.html";
 }
-else{
-  // GREEN – द्रष्टा
-  fill.style.background = "linear-gradient(90deg,#16a34a,#4ade80)";
-  hint.innerText =
-    "आप द्रष्टा भाव के निकट हैं। प्रतिक्रिया ढीली पड़ रही है।";
-}
+
+setLang(localStorage.getItem("lang") || "hi");
 </script>
-
 
 </body>
 </html>
