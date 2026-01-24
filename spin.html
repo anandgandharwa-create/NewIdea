@@ -22,7 +22,8 @@
   background: conic-gradient(
     red, orange, yellow, green, cyan, blue, violet, red
   );
-  transition: transform 3s ease-out;
+ transition: transform 2.2s ease-out;
+
 }
 
 
@@ -56,9 +57,9 @@ let wheel = document.getElementById("wheel");
 
 function spin() {
   // पूरी तरह random rotation
-  let rotation = Math.floor(Math.random() * 360) + 720;
+ let rotation = Math.floor(Math.random() * 360) + 1080;
 
-  wheel.style.transform = "rotate(" + rotation + "deg)";
+ wheel.style.transform = "rotate(" + rotation + "deg)";
 
   // spin के बाद final page
   setTimeout(() => {
