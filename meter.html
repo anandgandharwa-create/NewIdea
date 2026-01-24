@@ -7,53 +7,46 @@
   <meta name="theme-color" content="#020617">
 
   <style>
-    body {
-      background: linear-gradient(180deg,#020617,#020b2d);
-      color: #e5e7eb;
-      font-family: sans-serif;
-      padding: 20px;
-      text-align: center;
-    }
-    h1 {
-      color: #facc15;
-      margin-bottom: 10px;
-    }
-    .subtitle {
-      color: #94a3b8;
-      margin-bottom: 30px;
-    }
-    .lang button {
-      margin: 0 6px 20px;
-      padding: 6px 12px;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
-    }
-    .meter-box {
-      background: rgba(255,255,255,0.05);
-      padding: 30px;
-      border-radius: 16px;
-      margin-bottom: 30px;
-    }
-    .score {
-      font-size: 48px;
-      color: #22c55e;
-      margin: 20px 0;
-    }
-    .message {
-      font-size: 18px;
-      line-height: 1.6;
-    }
-    .btn {
-      margin-top: 30px;
-      padding: 14px 20px;
-      font-size: 16px;
-      background: #22c55e;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      color: #020617;
-    }
+   .gauge {
+  width: 260px;
+  height: 130px;
+  margin: 0 auto 30px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 260px 260px 0 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.gauge-fill {
+  width: 100%;
+  height: 100%;
+  background: #22c55e;
+  position: absolute;
+  bottom: 0;
+  transform-origin: center bottom;
+  transform: rotate(-90deg);
+  transition: transform 1.2s ease, background 0.5s ease;
+}
+
+.gauge-cover {
+  width: 200px;
+  height: 100px;
+  background: #020617;
+  border-radius: 200px 200px 0 0;
+  position: absolute;
+  bottom: 0;
+  left: 30px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 10px;
+}
+
+.gauge-cover span {
+  font-size: 32px;
+  font-weight: bold;
+}
+
   </style>
 </head>
 
