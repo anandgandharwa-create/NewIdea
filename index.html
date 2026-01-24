@@ -89,9 +89,35 @@
 </form>
 
 <script>
-  function goNext() {
-    window.location.href = "meter.html";
+function goNext() {
+
+  let answers = [];
+  let totalQuestions = 5;
+
+  for(let i=1; i<=totalQuestions; i++){
+    let options = document.getElementsByName("q"+i);
+    let selected = false;
+
+    for(let j=0; j<options.length; j++){
+      if(options[j].checked){
+        answers.push(j); // 0,1,2,3
+        selected = true;
+        break;
+      }
+    }
+
+    if(!selected){
+      alert("कृपया सभी प्रश्नों का उत्तर दें");
+      return; // यहीं रोक दो
+    }
   }
+
+  // answers save करो
+  localStorage.setItem("zqf_answers", JSON.stringify(answers));
+
+  // आगे भेजो
+  window.location.href = "meter.html";
+}
 </script>
 
 </body>
