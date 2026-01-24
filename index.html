@@ -63,7 +63,7 @@
 <body>
 
 <h1 data-key="title">Zero Quantum Frequency™</h1>
-<div class="subtitle" data-key="subtitle">उत्तर नहीं - दर्पण</div>
+<div class="subtitle" data-key="subtitle">उत्तर नहीं — दर्पण</div>
 
 <div class="lang">
   <button onclick="setLang('hi')">हिन्दी</button>
@@ -72,10 +72,12 @@
 
 <form id="quiz"></form>
 
-<button class="main-btn" onclick="submitQuiz()" data-key="next">आगे बढ़ें</button>
+<button class="main-btn" onclick="submitQuiz()" data-key="next">
+  आगे बढ़ें
+</button>
 
 <script>
-/* 🌐 Language Text */
+/* 🌐 UI TEXT */
 const uiText = {
   hi: {
     title: "Zero Quantum Frequency™",
@@ -102,45 +104,149 @@ function setLang(lang) {
   renderQuiz();
 }
 
-/* 🟢 Question Banks */
-const questionBankHI = [
-  { q:"अचानक कुछ गलत हो जाए तो भीतर क्या उठता है?", type:"reaction" },
-  { q:"कोई आपकी बात न माने तो पहली अनुभूति?", type:"reaction" },
-  { q:"किसी गलती के बाद पहली प्रतिक्रिया?", type:"reaction" },
-  { q:"टकराव की स्थिति में आप क्या अनुभव करते हैं?", type:"reaction" },
-  { q:"आलोचना सुनते समय भीतर क्या होता है?", type:"reaction" }
-];
-
-const questionBankEN = [
-  { q:"When something suddenly goes wrong, what arises inside?", type:"reaction" },
-  { q:"When someone doesn’t listen to you, what is the first feeling?", type:"reaction" },
-  { q:"Your first reaction after making a mistake?", type:"reaction" },
-  { q:"What do you feel during conflict?", type:"reaction" },
-  { q:"What happens inside when you are criticised?", type:"reaction" }
-];
-
-const options = {
+/* 🟢 25 QUESTION BANKS */
+const questionBank = {
   hi: [
-    "मैं तुरंत प्रतिक्रिया करता हूँ",
-    "मैं खुद को सही ठहराता हूँ",
-    "मैं प्रतिक्रिया को देख पाता हूँ",
-    "मैं उसे होने देता हूँ"
+    { q:"अचानक कुछ गलत हो जाए तो भीतर क्या उठता है?", type:"reaction" },
+    { q:"कोई आपकी बात न माने तो पहली अनुभूति?", type:"reaction" },
+    { q:"किसी गलती के बाद पहली प्रतिक्रिया?", type:"reaction" },
+    { q:"टकराव की स्थिति में आप क्या अनुभव करते हैं?", type:"reaction" },
+    { q:"आलोचना सुनते समय भीतर क्या होता है?", type:"reaction" },
+
+    { q:"जीवन में नियंत्रण छूटे तो?", type:"control" },
+    { q:"आप अपने निर्णयों को कैसे देखते हैं?", type:"control" },
+    { q:"कोई योजना बिगड़ जाए तो?", type:"control" },
+    { q:"आप स्वयं को कितना कर्ता मानते हैं?", type:"control" },
+    { q:"परिवर्तन को आप कैसे देखते हैं?", type:"control" },
+
+    { q:"आपका ध्यान अधिकतर कहाँ रहता है?", type:"awareness" },
+    { q:"वर्तमान क्षण में रहना आपको कैसा लगता है?", type:"awareness" },
+    { q:"आप अपनी प्रतिक्रियाओं को कितनी स्पष्टता से देखते हैं?", type:"awareness" },
+    { q:"कुछ घटते समय क्या आप उसे देख पाते हैं?", type:"awareness" },
+    { q:"आप इस क्षण स्वयं को कैसे देखते हैं?", type:"awareness" },
+
+    { q:"अकेले होने पर मन कहाँ रहता है?", type:"emotion" },
+    { q:"किसी के दुख को देखकर भीतर क्या होता है?", type:"emotion" },
+    { q:"असफलता का अनुभव कैसा होता है?", type:"emotion" },
+    { q:"सफलता मिलने पर भीतर क्या उठता है?", type:"emotion" },
+    { q:"जीवन आपको भावनात्मक रूप से कैसा लगता है?", type:"emotion" },
+
+    { q:"रुकने का अवसर मिले तो आप क्या करते हैं?", type:"silence" },
+    { q:"कुछ न करते समय आप क्या अनुभव करते हैं?", type:"silence" },
+    { q:"शांत क्षणों में भीतर क्या होता है?", type:"silence" },
+    { q:"जब कुछ करने को न हो तो मन?", type:"silence" },
+    { q:"आपकी सबसे गहरी पहचान किसमें है?", type:"silence" }
   ],
+
   en: [
-    "I react immediately",
-    "I justify myself",
-    "I can observe the reaction",
-    "I let it happen"
+    { q:"When something suddenly goes wrong, what arises inside?", type:"reaction" },
+    { q:"When someone doesn’t listen to you, what is the first feeling?", type:"reaction" },
+    { q:"Your first reaction after making a mistake?", type:"reaction" },
+    { q:"What do you feel during conflict?", type:"reaction" },
+    { q:"What happens inside when you are criticised?", type:"reaction" },
+
+    { q:"What happens when control slips away?", type:"control" },
+    { q:"How do you see your decisions?", type:"control" },
+    { q:"When a plan fails, what happens?", type:"control" },
+    { q:"How much do you see yourself as the doer?", type:"control" },
+    { q:"How do you relate to change?", type:"control" },
+
+    { q:"Where does your attention mostly remain?", type:"awareness" },
+    { q:"How does being in the present feel to you?", type:"awareness" },
+    { q:"How clearly do you observe your reactions?", type:"awareness" },
+    { q:"Can you see events as they happen?", type:"awareness" },
+    { q:"How do you see yourself in this moment?", type:"awareness" },
+
+    { q:"Where does the mind go when you are alone?", type:"emotion" },
+    { q:"What arises when you see someone in pain?", type:"emotion" },
+    { q:"How does failure feel?", type:"emotion" },
+    { q:"What arises when you succeed?", type:"emotion" },
+    { q:"How does life feel emotionally to you?", type:"emotion" },
+
+    { q:"When you get a chance to pause, what do you do?", type:"silence" },
+    { q:"What do you experience when doing nothing?", type:"silence" },
+    { q:"What happens inside during quiet moments?", type:"silence" },
+    { q:"When there is nothing to do, where is the mind?", type:"silence" },
+    { q:"Where is your deepest sense of identity?", type:"silence" }
   ]
+};
+
+/* 🟢 OPTIONS BY CATEGORY */
+const options = {
+  hi: {
+    reaction: [
+      "मैं तुरंत प्रतिक्रिया करता हूँ",
+      "मैं खुद को सही ठहराता हूँ",
+      "मैं प्रतिक्रिया को देख पाता हूँ",
+      "मैं उसे होने देता हूँ"
+    ],
+    control: [
+      "मैं स्थिति को संभालना चाहता हूँ",
+      "मैं समाधान खोजता हूँ",
+      "मैं स्थिति को देखता हूँ",
+      "मैं नियंत्रण छोड़ देता हूँ"
+    ],
+    awareness: [
+      "मेरा ध्यान भटक जाता है",
+      "कभी देख पाता हूँ, कभी नहीं",
+      "अधिकतर देख पाता हूँ",
+      "मैं केवल साक्षी रहता हूँ"
+    ],
+    emotion: [
+      "मैं भावना में बह जाता हूँ",
+      "मैं उसे दबाने की कोशिश करता हूँ",
+      "मैं भावना को देखता हूँ",
+      "मैं भावना को होने देता हूँ"
+    ],
+    silence: [
+      "मन बेचैन हो जाता है",
+      "मैं कुछ करने लगता हूँ",
+      "मैं ठहरने की कोशिश करता हूँ",
+      "मैं शांति में रहता हूँ"
+    ]
+  },
+
+  en: {
+    reaction: [
+      "I react immediately",
+      "I justify myself",
+      "I can observe the reaction",
+      "I let it happen"
+    ],
+    control: [
+      "I try to manage the situation",
+      "I look for solutions",
+      "I observe the situation",
+      "I let go of control"
+    ],
+    awareness: [
+      "My attention gets distracted",
+      "Sometimes I can see, sometimes not",
+      "Most of the time I can see",
+      "I remain as the witness"
+    ],
+    emotion: [
+      "I get carried away by emotion",
+      "I try to suppress it",
+      "I observe the emotion",
+      "I allow the emotion"
+    ],
+    silence: [
+      "The mind becomes restless",
+      "I start doing something",
+      "I try to remain still",
+      "I rest in silence"
+    ]
+  }
 };
 
 let selected = [];
 
 function renderQuiz() {
   const lang = localStorage.getItem("lang") || "hi";
-  const bank = lang === "en" ? questionBankEN : questionBankHI;
+  const bank = questionBank[lang];
 
-  selected = bank.sort(() => 0.5 - Math.random()).slice(0, 5);
+  selected = [...bank].sort(() => 0.5 - Math.random()).slice(0, 5);
 
   const quiz = document.getElementById("quiz");
   quiz.innerHTML = "";
@@ -150,7 +256,7 @@ function renderQuiz() {
     div.className = "question";
 
     let html = `<p>${idx + 1}. ${item.q}</p>`;
-    options[lang].forEach((opt, i) => {
+    options[lang][item.type].forEach((opt, i) => {
       html += `
         <label>
           <input type="radio" name="q${idx}" value="${i}">
@@ -165,13 +271,18 @@ function renderQuiz() {
 
 function submitQuiz() {
   const lang = localStorage.getItem("lang") || "hi";
+  let answers = [];
 
   for (let i = 0; i < selected.length; i++) {
-    if (!document.querySelector(`input[name="q${i}"]:checked`)) {
+    const sel = document.querySelector(`input[name="q${i}"]:checked`);
+    if (!sel) {
       alert(uiText[lang].alert);
       return;
     }
+    answers.push(parseInt(sel.value));
   }
+
+  localStorage.setItem("zqf_answers", JSON.stringify(answers));
   window.location.href = "meter.html";
 }
 
