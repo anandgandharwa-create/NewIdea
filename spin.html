@@ -46,10 +46,10 @@
 <script>
 /*
   Zero Quantum Frequency™
-  Spin Wheel – Meter Synced
+  Spin Wheel – Meter controlled stop
 */
 
-// meter se answers uthao
+// 1️⃣ meter se answers uthao
 let stored = localStorage.getItem("zqf_answers");
 let percent = 0;
 
@@ -59,32 +59,47 @@ if (stored) {
   percent = Math.round((score / 15) * 100);
 }
 
-// wheel element
+// 2️⃣ wheel element
 let wheel = document.getElementById("wheel");
 
-// 🔴🟡🟢 Frequency ke hisaab se colour set karo
+// 3️⃣ colour + angle range set karo
+let minAngle = 0;
+let maxAngle = 360;
+
 if (percent <= 33) {
   // 🔴 RED – कर्तापन
   wheel.style.background =
     "conic-gradient(#dc2626, #f87171, #dc2626)";
+  minAngle = 0;
+  maxAngle = 120;
 }
 else if (percent <= 66) {
   // 🟡 YELLOW – संक्रमण
   wheel.style.background =
     "conic-gradient(#facc15, #fde047, #facc15)";
+  minAngle = 121;
+  maxAngle = 240;
 }
 else {
   // 🟢 GREEN – द्रष्टा
   wheel.style.background =
     "conic-gradient(#16a34a, #4ade80, #16a34a)";
+  minAngle = 241;
+  maxAngle = 360;
 }
 
-// spin action
+// 4️⃣ spin function — bounded random
 function spin() {
-  let rotation = Math.floor(Math.random() * 360) + 720;
+  // उसी range में random angle
+  let stopAngle =
+    Math.floor(Math.random() * (maxAngle - minAngle + 1)) + minAngle;
+
+  // extra full rotations for smoothness
+  let rotation = 720 + stopAngle;
+
   wheel.style.transform = "rotate(" + rotation + "deg)";
 
-  // spin ke baad final advice
+  // final advice page
   setTimeout(() => {
     window.location.href = "advice.html";
   }, 3200);
