@@ -11,9 +11,13 @@ const words = {
 
 function setLang(lang) {
   localStorage.setItem("lang", lang);
+  document.documentElement.lang = lang;
 
   document.querySelectorAll("[data-key]").forEach(el => {
-    el.innerText = words[lang][el.getAttribute("data-key")];
+    const key = el.getAttribute("data-key");
+    if (words[lang][key]) {
+      el.innerHTML = words[lang][key];
+    }
   });
 }
 
