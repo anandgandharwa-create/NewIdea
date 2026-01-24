@@ -46,6 +46,29 @@
   font-size: 32px;
   font-weight: bold;
 }
+/* 🌈 GAUGE GLOW */
+.gauge {
+  box-shadow:
+    0 0 25px rgba(34,197,94,0.18),
+    0 0 70px rgba(34,197,94,0.10);
+}
+
+/* 🎯 NEEDLE */
+.needle {
+  width: 4px;
+  height: 110px;
+  background: white;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform-origin: bottom center;
+  transform: rotate(-90deg);
+  border-radius: 4px;
+  box-shadow:
+    0 0 12px rgba(255,255,255,0.7),
+    0 0 30px rgba(255,255,255,0.3);
+  transition: transform 1.2s ease;
+}
 
   </style>
 </head>
@@ -62,6 +85,8 @@
 
 <div class="gauge">
   <div class="gauge-fill" id="gaugeFill"></div>
+  <div class="needle" id="needle"></div>
+
   <div class="gauge-cover">
     <span id="score">0%</span>
   </div>
@@ -117,27 +142,30 @@ function showResult() {
 
   const scoreEl = document.getElementById("score");
   const fillEl = document.getElementById("gaugeFill");
+  const needleEl = document.getElementById("needle");
   const msgEl = document.getElementById("message");
 
   scoreEl.innerText = percent + "%";
 
-  // 0–100% → -90deg to +90deg
+  // सुई को घुमाओ
   const angle = (percent / 100) * 180 - 90;
   fillEl.style.transform = `rotate(${angle}deg)`;
+  needleEl.style.transform = `rotate(${angle}deg)`;
 
   if (percent <= 33) {
-    fillEl.style.background = "#ef4444"; // red
+    fillEl.style.background = "#ef4444"; // लाल
     msgEl.innerText = uiText[lang].low;
-  } 
+  }
   else if (percent <= 66) {
-    fillEl.style.background = "#facc15"; // yellow
+    fillEl.style.background = "#facc15"; // पीला
     msgEl.innerText = uiText[lang].mid;
-  } 
+  }
   else {
-    fillEl.style.background = "#22c55e"; // green
+    fillEl.style.background = "#22c55e"; // हरा
     msgEl.innerText = uiText[lang].high;
   }
 }
+
 
 
 function goSpin() {
