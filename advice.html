@@ -2,7 +2,7 @@
 <html lang="hi">
 <head>
   <meta charset="UTF-8">
-  <title>Zero Quantum Frequency™ – मार्ग संकेत</title>
+  <title data-key="titleTag">Zero Quantum Frequency™ – मार्ग संकेत</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -13,33 +13,39 @@
       padding: 30px;
       line-height: 1.8;
     }
-
     h1 {
       text-align: center;
       color: #38bdf8;
       margin-bottom: 10px;
     }
-
     .subtitle {
       text-align: center;
       font-size: 16px;
       color: #94a3b8;
       margin-bottom: 30px;
     }
-
+    .lang {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .lang button {
+      margin: 0 6px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+    }
     .card {
       background: rgba(255,255,255,0.05);
       border-radius: 14px;
       padding: 25px;
       margin-bottom: 25px;
     }
-
     .card h2 {
       color: #fbbf24;
       font-size: 20px;
       margin-bottom: 10px;
     }
-
     .practice {
       background: rgba(34,197,94,0.1);
       border-left: 4px solid #22c55e;
@@ -47,7 +53,6 @@
       border-radius: 10px;
       margin-top: 30px;
     }
-
     .install-box {
       margin-top: 40px;
       padding: 20px;
@@ -55,8 +60,7 @@
       background: rgba(255,255,255,0.06);
       text-align: center;
     }
-
-    button {
+    button.main {
       display: block;
       margin: 30px auto 0;
       padding: 14px 26px;
@@ -67,11 +71,9 @@
       cursor: pointer;
       color: #020617;
     }
-
     .install-box button {
       margin-top: 15px;
     }
-
     .manual-hint {
       font-size: 13px;
       opacity: 0.7;
@@ -83,99 +85,144 @@
 
 <body>
 
-<h1>Zero Quantum Frequency™</h1>
-<div class="subtitle">
+<div class="lang">
+  <button onclick="setLang('hi')">हिन्दी</button>
+  <button onclick="setLang('en')">English</button>
+</div>
+
+<h1 data-key="title">Zero Quantum Frequency™</h1>
+<div class="subtitle" data-key="subtitle">
   यह उत्तर नहीं है — यह स्मरण है
 </div>
 
-<!-- RESULT CARD (DYNAMIC) -->
 <div class="card">
   <h2 id="resultTitle"></h2>
   <p id="resultText"></p>
 </div>
 
-<!-- PRACTICE CARD (DYNAMIC) -->
 <div class="practice">
-  <h2>आज के लिए सूक्ष्म अभ्यास</h2>
+  <h2 data-key="practiceTitle">आज के लिए सूक्ष्म अभ्यास</h2>
   <p id="practiceText"></p>
 </div>
 
-<!-- ✅ INSTALL UX (PERFECT PLACE) -->
 <div id="installBox" class="install-box">
-  <p>
+  <p data-key="installText">
     यदि यह अनुभव उपयोगी लगा हो,<br>
     तो आप इसे अपने जीवन में स्थायी रूप से जोड़ सकते हैं।
   </p>
 
-  <button id="installBtn">
+  <button id="installBtn" data-key="installBtn">
     इस अनुभव को अपने फोन में जोड़ें
   </button>
 
-  <p id="manualHint" class="manual-hint">
+  <p id="manualHint" class="manual-hint" data-key="manual">
     Chrome में ⋮ मेनू खोलें<br>
     और “Add to Home screen” चुनें
   </p>
 </div>
 
-<button onclick="location.href='index.html'">
+<button class="main" onclick="location.href='index.html'" data-key="restart">
   फिर से अनुभव करें
 </button>
 
-<!-- 🔑 DYNAMIC ADVICE LOGIC -->
 <script>
-let stored = localStorage.getItem("zqf_answers");
-let percent = 0;
+/* 🌐 UI TEXT */
+const ui = {
+  hi: {
+    titleTag: "Zero Quantum Frequency™ – मार्ग संकेत",
+    title: "Zero Quantum Frequency™",
+    subtitle: "यह उत्तर नहीं है — यह स्मरण है",
+    practiceTitle: "आज के लिए सूक्ष्म अभ्यास",
+    installText: "यदि यह अनुभव उपयोगी लगा हो,<br>तो आप इसे अपने जीवन में स्थायी रूप से जोड़ सकते हैं।",
+    installBtn: "इस अनुभव को अपने फोन में जोड़ें",
+    manual: "Chrome में ⋮ मेनू खोलें<br>और “Add to Home screen” चुनें",
+    restart: "फिर से अनुभव करें",
 
-if (stored) {
-  let answers = JSON.parse(stored);
-  let score = answers.reduce((a, b) => a + b, 0);
-  percent = Math.round((score / 15) * 100);
+    lowTitle: "कर्तापन की अवस्था",
+    lowText: "इस समय आप जीवन को मुख्यतः करने वाले के रूप में अनुभव कर रहे हैं। यह गलत नहीं है, पर यहीं से तनाव और थकान जन्म लेती है।",
+    lowPractice: "आज केवल यह देखें कि आप दिन में कितनी बार नियंत्रण करना चाहते हैं। कुछ भी बदलने की कोशिश न करें।",
+
+    midTitle: "संक्रमण की अवस्था",
+    midText: "आप देखने और करने के बीच खड़े हैं। यहीं से जागरूकता का द्वार खुलता है।",
+    midPractice: "जब भी कोई प्रतिक्रिया उठे, दो श्वास लें और देखें — क्या आप उसे बिना बदले देख सकते हैं?",
+
+    highTitle: "द्रष्टा भाव की अवस्था",
+    highText: "आप प्रतिक्रिया से पहले देखने लगे हैं। यहीं Zero Quantum Frequency की झलक मिलती है।",
+    highPractice: "आज कुछ भी विशेष करने की आवश्यकता नहीं। जो घट रहा है, उसे घटने दें।"
+  },
+
+  en: {
+    titleTag: "Zero Quantum Frequency™ – Guidance",
+    title: "Zero Quantum Frequency™",
+    subtitle: "Not an answer — a remembrance",
+    practiceTitle: "A subtle practice for today",
+    installText: "If this experience felt meaningful,<br>you can make it a part of your daily life.",
+    installBtn: "Add this experience to your phone",
+    manual: "Open Chrome ⋮ menu<br>and choose “Add to Home screen”",
+    restart: "Experience again",
+
+    lowTitle: "State of Doership",
+    lowText: "At this moment you experience life mainly as the doer. This is not wrong, but this is where stress and fatigue arise.",
+    lowPractice: "Today, simply notice how many times you try to control things. Do not try to change anything.",
+
+    midTitle: "State of Transition",
+    midText: "You are standing between doing and witnessing. This is where awareness begins to open.",
+    midPractice: "Whenever a reaction arises, take two breaths and see — can you watch it without changing it?",
+
+    highTitle: "State of Witnessing",
+    highText: "You are beginning to see before reacting. This is a glimpse of Zero Quantum Frequency.",
+    highPractice: "Nothing special needs to be done today. Let whatever happens, happen."
+  }
+};
+
+function setLang(lang) {
+  localStorage.setItem("lang", lang);
+  document.documentElement.lang = lang;
+
+  document.querySelectorAll("[data-key]").forEach(el => {
+    if (ui[lang][el.dataset.key]) {
+      el.innerHTML = ui[lang][el.dataset.key];
+    }
+  });
+
+  renderResult();
 }
 
-let title = document.getElementById("resultTitle");
-let text = document.getElementById("resultText");
-let practice = document.getElementById("practiceText");
+/* 🔑 RESULT LOGIC */
+function renderResult() {
+  let stored = localStorage.getItem("zqf_answers");
+  let percent = 0;
 
-if (percent <= 33) {
-  title.innerText = "कर्तापन की अवस्था";
-  text.innerText =
-    "इस समय आप जीवन को मुख्यतः करने वाले के रूप में अनुभव कर रहे हैं। " +
-    "यह गलत नहीं है, पर यहीं से तनाव और थकान जन्म लेती है।";
+  if (stored) {
+    let answers = JSON.parse(stored);
+    let score = answers.reduce((a, b) => a + b, 0);
+    percent = Math.round((score / 15) * 100);
+  }
 
-  practice.innerText =
-    "आज केवल यह देखें कि आप दिन में कितनी बार नियंत्रण करना चाहते हैं। " +
-    "कुछ भी बदलने की कोशिश न करें।";
+  const lang = localStorage.getItem("lang") || "hi";
+  const t = ui[lang];
+
+  if (percent <= 33) {
+    resultTitle.innerText = t.lowTitle;
+    resultText.innerText = t.lowText;
+    practiceText.innerText = t.lowPractice;
+  } else if (percent <= 66) {
+    resultTitle.innerText = t.midTitle;
+    resultText.innerText = t.midText;
+    practiceText.innerText = t.midPractice;
+  } else {
+    resultTitle.innerText = t.highTitle;
+    resultText.innerText = t.highText;
+    practiceText.innerText = t.highPractice;
+  }
 }
-else if (percent <= 66) {
-  title.innerText = "संक्रमण की अवस्था";
-  text.innerText =
-    "आप देखने और करने के बीच खड़े हैं। " +
-    "यहीं से जागरूकता का द्वार खुलता है।";
 
-  practice.innerText =
-    "जब भी कोई प्रतिक्रिया उठे, दो श्वास लें और देखें — " +
-    "क्या आप उसे बिना बदले देख सकते हैं?";
-}
-else {
-  title.innerText = "द्रष्टा भाव की अवस्था";
-  text.innerText =
-    "आप प्रतिक्रिया से पहले देखने लगे हैं। " +
-    "यहीं Zero Quantum Frequency की झलक मिलती है।";
-
-  practice.innerText =
-    "आज कुछ भी विशेष करने की आवश्यकता नहीं। " +
-    "जो घट रहा है, उसे घटने दें।";
-}
-</script>
-
-<!-- 🔐 INSTALL SCRIPT -->
-<script>
+/* 🔐 INSTALL LOGIC */
 let deferredPrompt;
 const installBtn = document.getElementById("installBtn");
 const installBox = document.getElementById("installBox");
 const manualHint = document.getElementById("manualHint");
 
-// hide if already installed
 if (window.matchMedia('(display-mode: standalone)').matches) {
   installBox.style.display = "none";
 }
@@ -190,20 +237,17 @@ installBtn.addEventListener("click", async () => {
     manualHint.style.display = "block";
     return;
   }
-
   deferredPrompt.prompt();
   const result = await deferredPrompt.userChoice;
-
-  if (result.outcome === "accepted") {
-    installBox.style.display = "none";
-  }
-
+  if (result.outcome === "accepted") installBox.style.display = "none";
   deferredPrompt = null;
 });
 
 window.addEventListener("appinstalled", () => {
   installBox.style.display = "none";
 });
+
+setLang(localStorage.getItem("lang") || "hi");
 </script>
 
 </body>
