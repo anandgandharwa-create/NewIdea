@@ -116,24 +116,29 @@ function showResult() {
     : 0;
 
   const scoreEl = document.getElementById("score");
+  const fillEl = document.getElementById("gaugeFill");
   const msgEl = document.getElementById("message");
 
   scoreEl.innerText = percent + "%";
 
-  // 🔴🟡🟢 COLOR + MESSAGE LOGIC
+  // 0–100% → -90deg to +90deg
+  const angle = (percent / 100) * 180 - 90;
+  fillEl.style.transform = `rotate(${angle}deg)`;
+
   if (percent <= 33) {
-    scoreEl.style.color = "#ef4444"; // RED
+    fillEl.style.background = "#ef4444"; // red
     msgEl.innerText = uiText[lang].low;
   } 
   else if (percent <= 66) {
-    scoreEl.style.color = "#facc15"; // YELLOW
+    fillEl.style.background = "#facc15"; // yellow
     msgEl.innerText = uiText[lang].mid;
   } 
   else {
-    scoreEl.style.color = "#22c55e"; // GREEN
+    fillEl.style.background = "#22c55e"; // green
     msgEl.innerText = uiText[lang].high;
   }
 }
+
 
 function goSpin() {
   window.location.href = "spin.html";
