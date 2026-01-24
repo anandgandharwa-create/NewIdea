@@ -48,9 +48,17 @@
       margin-top: 30px;
     }
 
+    .install-box {
+      margin-top: 40px;
+      padding: 20px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.06);
+      text-align: center;
+    }
+
     button {
       display: block;
-      margin: 40px auto 0;
+      margin: 30px auto 0;
       padding: 14px 26px;
       font-size: 16px;
       background: #22c55e;
@@ -58,6 +66,17 @@
       border-radius: 10px;
       cursor: pointer;
       color: #020617;
+    }
+
+    .install-box button {
+      margin-top: 15px;
+    }
+
+    .manual-hint {
+      font-size: 13px;
+      opacity: 0.7;
+      margin-top: 10px;
+      display: none;
     }
   </style>
 </head>
@@ -81,65 +100,110 @@
   <p id="practiceText"></p>
 </div>
 
+<!-- ✅ INSTALL UX (PERFECT PLACE) -->
+<div id="installBox" class="install-box">
+  <p>
+    यदि यह अनुभव उपयोगी लगा हो,<br>
+    तो आप इसे अपने जीवन में स्थायी रूप से जोड़ सकते हैं।
+  </p>
+
+  <button id="installBtn">
+    इस अनुभव को अपने फोन में जोड़ें
+  </button>
+
+  <p id="manualHint" class="manual-hint">
+    Chrome में ⋮ मेनू खोलें<br>
+    और “Add to Home screen” चुनें
+  </p>
+</div>
+
 <button onclick="location.href='index.html'">
   फिर से अनुभव करें
 </button>
 
-<!-- 🔑 DYNAMIC LOGIC -->
+<!-- 🔑 DYNAMIC ADVICE LOGIC -->
 <script>
-/*
-  Zero Quantum Frequency™
-  Final Advice – Meter Based
-*/
-
 let stored = localStorage.getItem("zqf_answers");
 let percent = 0;
 
 if (stored) {
   let answers = JSON.parse(stored);
-  let score = answers.reduce((a, b) => a + b, 0); // max = 15
+  let score = answers.reduce((a, b) => a + b, 0);
   percent = Math.round((score / 15) * 100);
 }
 
-// elements
 let title = document.getElementById("resultTitle");
 let text = document.getElementById("resultText");
 let practice = document.getElementById("practiceText");
 
-// 🔴🟡🟢 RESULT LOGIC
 if (percent <= 33) {
-  // 🔴 RED
   title.innerText = "कर्तापन की अवस्था";
   text.innerText =
     "इस समय आप जीवन को मुख्यतः करने वाले के रूप में अनुभव कर रहे हैं। " +
     "यह गलत नहीं है, पर यहीं से तनाव और थकान जन्म लेती है।";
 
   practice.innerText =
-    "आज केवल यह देखें कि आप दिन में कितनी बार चीज़ों को नियंत्रित करना चाहते हैं। " +
+    "आज केवल यह देखें कि आप दिन में कितनी बार नियंत्रण करना चाहते हैं। " +
     "कुछ भी बदलने की कोशिश न करें।";
 }
 else if (percent <= 66) {
-  // 🟡 YELLOW
   title.innerText = "संक्रमण की अवस्था";
   text.innerText =
     "आप देखने और करने के बीच खड़े हैं। " +
-    "कभी कर्तापन, कभी साक्षी भाव उभरता है। यही सबसे महत्वपूर्ण अवस्था है।";
+    "यहीं से जागरूकता का द्वार खुलता है।";
 
   practice.innerText =
-    "जब भी कोई प्रतिक्रिया उठे, दो गहरी श्वास लें और देखें — " +
-    "क्या आप इसे बिना बदले देख सकते हैं?";
+    "जब भी कोई प्रतिक्रिया उठे, दो श्वास लें और देखें — " +
+    "क्या आप उसे बिना बदले देख सकते हैं?";
 }
 else {
-  // 🟢 GREEN
   title.innerText = "द्रष्टा भाव की अवस्था";
   text.innerText =
     "आप प्रतिक्रिया से पहले देखने लगे हैं। " +
     "यहीं Zero Quantum Frequency की झलक मिलती है।";
 
   practice.innerText =
-    "आज कुछ भी विशेष साधना न करें। " +
-    "जो सहज हो रहा है, उसे सहज रूप से होने दें।";
+    "आज कुछ भी विशेष करने की आवश्यकता नहीं। " +
+    "जो घट रहा है, उसे घटने दें।";
 }
+</script>
+
+<!-- 🔐 INSTALL SCRIPT -->
+<script>
+let deferredPrompt;
+const installBtn = document.getElementById("installBtn");
+const installBox = document.getElementById("installBox");
+const manualHint = document.getElementById("manualHint");
+
+// hide if already installed
+if (window.matchMedia('(display-mode: standalone)').matches) {
+  installBox.style.display = "none";
+}
+
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+});
+
+installBtn.addEventListener("click", async () => {
+  if (!deferredPrompt) {
+    manualHint.style.display = "block";
+    return;
+  }
+
+  deferredPrompt.prompt();
+  const result = await deferredPrompt.userChoice;
+
+  if (result.outcome === "accepted") {
+    installBox.style.display = "none";
+  }
+
+  deferredPrompt = null;
+});
+
+window.addEventListener("appinstalled", () => {
+  installBox.style.display = "none";
+});
 </script>
 
 </body>
