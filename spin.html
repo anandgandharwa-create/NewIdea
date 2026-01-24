@@ -14,16 +14,15 @@
       padding-top: 40px;
     }
 
-    .wheel {
-      width: 250px;
-      height: 250px;
-      border-radius: 50%;
-      margin: 40px auto;
-      background: conic-gradient(
-        red, orange, yellow, green, cyan, blue, violet, red
-      );
-      transition: transform 3s ease-out;
-    }
+   .wheel {
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  margin: 40px auto;
+  background: #333; /* JS से बदलेगा */
+  transition: transform 3s ease-out, background 0.6s ease;
+}
+
 
     button {
       padding: 15px 30px;
@@ -45,16 +44,53 @@
 <button onclick="spin()">SPIN</button>
 
 <script>
-  function spin() {
-    let rotation = Math.floor(Math.random() * 360) + 720;
-    document.getElementById("wheel").style.transform =
-      "rotate(" + rotation + "deg)";
+/*
+  Zero Quantum Frequency™
+  Spin Wheel – Meter Synced
+*/
 
-    setTimeout(() => {
-      window.location.href = "advice.html";
-    }, 3200);
-  }
+// meter se answers uthao
+let stored = localStorage.getItem("zqf_answers");
+let percent = 0;
+
+if (stored) {
+  let answers = JSON.parse(stored);
+  let score = answers.reduce((a, b) => a + b, 0); // max = 15
+  percent = Math.round((score / 15) * 100);
+}
+
+// wheel element
+let wheel = document.getElementById("wheel");
+
+// 🔴🟡🟢 Frequency ke hisaab se colour set karo
+if (percent <= 33) {
+  // 🔴 RED – कर्तापन
+  wheel.style.background =
+    "conic-gradient(#dc2626, #f87171, #dc2626)";
+}
+else if (percent <= 66) {
+  // 🟡 YELLOW – संक्रमण
+  wheel.style.background =
+    "conic-gradient(#facc15, #fde047, #facc15)";
+}
+else {
+  // 🟢 GREEN – द्रष्टा
+  wheel.style.background =
+    "conic-gradient(#16a34a, #4ade80, #16a34a)";
+}
+
+// spin action
+function spin() {
+  let rotation = Math.floor(Math.random() * 360) + 720;
+  wheel.style.transform = "rotate(" + rotation + "deg)";
+
+  // spin ke baad final advice
+  setTimeout(() => {
+    window.location.href = "advice.html";
+  }, 3200);
+}
 </script>
+
 
 </body>
 </html>
