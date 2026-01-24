@@ -4,35 +4,54 @@
   <meta charset="UTF-8">
   <title>Zero Quantum Frequency™</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
     body {
+      background: linear-gradient(180deg,#020617,#020b2d);
+      color: #e5e7eb;
       font-family: sans-serif;
-      background: #0f172a;
-      color: #ffffff;
       padding: 20px;
     }
+
     h1 {
-  text-align: center;
-  margin-bottom: 30px;
-  color: #facc15;
-  text-shadow: 0 0 12px rgba(250,204,21,0.4);
-}
+      text-align: center;
+      color: #facc15;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #94a3b8;
+      margin-bottom: 30px;
+    }
 
     .question {
       margin-bottom: 25px;
+      background: rgba(255,255,255,0.05);
+      padding: 18px;
+      border-radius: 12px;
     }
-    .option {
+
+    .question p {
+      margin-bottom: 12px;
+      font-size: 16px;
+    }
+
+    label {
       display: block;
       margin: 6px 0;
+      cursor: pointer;
     }
+
     button {
       width: 100%;
-      padding: 15px;
+      padding: 16px;
       font-size: 18px;
-      background: #38bdf8;
+      background: #22c55e;
       border: none;
-      border-radius: 8px;
+      border-radius: 12px;
       cursor: pointer;
+      color: #020617;
       margin-top: 20px;
     }
   </style>
@@ -41,81 +60,97 @@
 <body>
 
 <h1>Zero Quantum Frequency™</h1>
+<div class="subtitle">उत्तर नहीं — दर्पण</div>
 
-<form id="quiz">
+<form id="quiz"></form>
 
-  <div class="question">
-    <p>1. जब जीवन में कोई अप्रत्याशित घटना घटती है, आपकी पहली प्रतिक्रिया?</p>
-    <label class="option"><input type="radio" name="q1"> कारण ढूँढना</label>
-    <label class="option"><input type="radio" name="q1"> दोष देना</label>
-    <label class="option"><input type="radio" name="q1"> शांत होकर देखना</label>
-    <label class="option"><input type="radio" name="q1"> सब पहले से तय था</label>
-  </div>
-
-  <div class="question">
-    <p>2. कोई आपसे असहमत हो जाए तो भीतर क्या होता है?</p>
-    <label class="option"><input type="radio" name="q2"> समझाने की इच्छा</label>
-    <label class="option"><input type="radio" name="q2"> गुस्सा/असहजता</label>
-    <label class="option"><input type="radio" name="q2"> सुनना</label>
-    <label class="option"><input type="radio" name="q2"> भीतर हलचल</label>
-  </div>
-
-  <div class="question">
-    <p>3. आप निर्णयों को कैसे अनुभव करते हैं?</p>
-    <label class="option"><input type="radio" name="q3"> मैं तय करता हूँ</label>
-    <label class="option"><input type="radio" name="q3"> हालात तय करते हैं</label>
-    <label class="option"><input type="radio" name="q3"> निर्णय उभरते हैं</label>
-    <label class="option"><input type="radio" name="q3"> जो हुआ वही था</label>
-  </div>
-
-  <div class="question">
-    <p>4. अकेले होने पर मन?</p>
-    <label class="option"><input type="radio" name="q4"> भविष्य में</label>
-    <label class="option"><input type="radio" name="q4"> अतीत में</label>
-    <label class="option"><input type="radio" name="q4"> शांत</label>
-    <label class="option"><input type="radio" name="q4"> बस है</label>
-  </div>
-
-  <div class="question">
-    <p>5. अभी स्वयं को कैसे देखते हैं?</p>
-    <label class="option"><input type="radio" name="q5"> संभाल रहा हूँ</label>
-    <label class="option"><input type="radio" name="q5"> बेहतर बनना</label>
-    <label class="option"><input type="radio" name="q5"> देख रहा हूँ</label>
-    <label class="option"><input type="radio" name="q5"> बस हूँ</label>
-  </div>
-
-  <button type="button" onclick="goNext()">आगे बढ़ें</button>
-
-</form>
+<button onclick="submitQuiz()">आगे बढ़ें</button>
 
 <script>
-function goNext() {
+/*
+  Zero Quantum Frequency™
+  25 Questions → Random 5
+*/
 
+// 🔹 25 सवाल (सभी समान structure)
+const allQuestions = [
+  "अचानक कुछ गलत हो जाए तो भीतर क्या उठता है?",
+  "कोई आपकी बात न माने तो पहली अनुभूति?",
+  "आप अपने निर्णयों को कैसे देखते हैं?",
+  "अकेले होने पर मन कहाँ रहता है?",
+  "आप स्वयं को अधिकतर कैसे अनुभव करते हैं?",
+  "आलोचना सुनते समय भीतर क्या होता है?",
+  "अनिश्चितता से आप कैसे निपटते हैं?",
+  "जीवन में नियंत्रण छूटे तो?",
+  "किसी गलती के बाद पहली प्रतिक्रिया?",
+  "टकराव की स्थिति में?",
+  "प्रशंसा मिलने पर भीतर क्या होता है?",
+  "कोई योजना बिगड़ जाए तो?",
+  "आप भविष्य को कैसे देखते हैं?",
+  "आपका ध्यान अधिकतर कहाँ रहता है?",
+  "रुकने का अवसर मिले तो?",
+  "किसी के दुख को देखकर?",
+  "असफलता का अनुभव?",
+  "सफलता मिलने पर?",
+  "कुछ न करते समय?",
+  "जीवन आपको कैसा लगता है?",
+  "वर्तमान क्षण में रहना?",
+  "आपकी प्रतिक्रिया का स्रोत?",
+  "परिवर्तन को आप कैसे देखते हैं?",
+  "आपकी सबसे गहरी पहचान?",
+  "आप इस क्षण स्वयं को कैसे देखते हैं?"
+];
+
+// 🔹 सभी सवालों के options (same philosophy)
+const options = [
+  "मैं कारण ढूँढता हूँ",
+  "मैं प्रतिक्रिया करता हूँ",
+  "मैं देखता हूँ",
+  "जो है, उसे होने देता हूँ"
+];
+
+// 🔹 Random 5 चुनना
+function getRandomQuestions(arr, num) {
+  return arr.sort(() => 0.5 - Math.random()).slice(0, num);
+}
+
+const selectedQuestions = getRandomQuestions([...allQuestions], 5);
+
+// 🔹 UI में render करना
+const quizDiv = document.getElementById("quiz");
+
+selectedQuestions.forEach((q, index) => {
+  let div = document.createElement("div");
+  div.className = "question";
+
+  let html = `<p>${index + 1}. ${q}</p>`;
+  options.forEach((opt, i) => {
+    html += `
+      <label>
+        <input type="radio" name="q${index}" value="${i}">
+        ${opt}
+      </label>
+    `;
+  });
+
+  div.innerHTML = html;
+  quizDiv.appendChild(div);
+});
+
+// 🔹 Submit logic
+function submitQuiz() {
   let answers = [];
-  let totalQuestions = 5;
 
-  for(let i=1; i<=totalQuestions; i++){
-    let options = document.getElementsByName("q"+i);
-    let selected = false;
-
-    for(let j=0; j<options.length; j++){
-      if(options[j].checked){
-        answers.push(j); // 0,1,2,3
-        selected = true;
-        break;
-      }
-    }
-
-    if(!selected){
+  for (let i = 0; i < 5; i++) {
+    let selected = document.querySelector(`input[name="q${i}"]:checked`);
+    if (!selected) {
       alert("कृपया सभी प्रश्नों का उत्तर दें");
-      return; // यहीं रोक दो
+      return;
     }
+    answers.push(parseInt(selected.value));
   }
 
-  // answers save करो
   localStorage.setItem("zqf_answers", JSON.stringify(answers));
-
-  // आगे भेजो
   window.location.href = "meter.html";
 }
 </script>
