@@ -97,44 +97,44 @@
     अनुभव की ओर बढ़ें
   </button>
 </div>
-
 <script>
-/*
-  LOGIC:
-  A = 0 point (कर्तापन)
-  B = 1
-  C = 2
-  D = 3 (द्रष्टा / Zero के पास)
-*/
-
 let stored = localStorage.getItem("zqf_answers");
-let percent;
+let percent = 0;
 
-// अगर answers मिले
 if(stored){
   let answers = JSON.parse(stored);
   let score = answers.reduce((a,b)=>a+b,0); // max 15
   percent = Math.round((score/15)*100);
-}else{
-  // demo / fallback
-  percent = Math.floor(Math.random()*40)+30;
 }
 
-// UI apply
-document.getElementById("fill").style.width = percent+"%";
-document.getElementById("percent").innerText = percent+"%";
+let fill = document.getElementById("fill");
+let percentText = document.getElementById("percent");
+let hint = document.getElementById("hint");
 
-// Meaning text
-let hintText="";
-if(percent < 30){
-  hintText="आप अभी मुख्यतः कर्तापन के स्तर पर हैं।";
-}else if(percent < 60){
-  hintText="आप देखने और करने के बीच के बिंदु पर हैं।";
-}else{
-  hintText="आप द्रष्टा भाव के क़रीब हैं।";
+fill.style.width = percent + "%";
+percentText.innerText = percent + "%";
+
+// 🔴🟡🟢 REAL LOGIC
+if(percent <= 33){
+  // RED – कर्तापन
+  fill.style.background = "linear-gradient(90deg,#dc2626,#f87171)";
+  hint.innerText =
+    "इस समय कर्तापन प्रभावी है। आप जीवन को करने वाले के रूप में अनुभव कर रहे हैं।";
 }
-document.getElementById("hint").innerText = hintText;
+else if(percent <= 66){
+  // YELLOW – संक्रमण
+  fill.style.background = "linear-gradient(90deg,#facc15,#fde047)";
+  hint.innerText =
+    "आप देखने और करने के बीच हैं। यही जागरूकता का द्वार है।";
+}
+else{
+  // GREEN – द्रष्टा
+  fill.style.background = "linear-gradient(90deg,#16a34a,#4ade80)";
+  hint.innerText =
+    "आप द्रष्टा भाव के निकट हैं। प्रतिक्रिया ढीली पड़ रही है।";
+}
 </script>
+
 
 </body>
 </html>
