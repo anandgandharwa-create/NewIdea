@@ -117,13 +117,24 @@ function showResult() {
     ? Math.round((total / (answers.length * 3)) * 100)
     : 0;
 
-  document.getElementById("score").innerText = percent + "%";
+  const scoreEl = document.getElementById("score");
+  const msgEl = document.getElementById("message");
 
-  let msg = uiText[lang].low;
-  if (percent > 40) msg = uiText[lang].mid;
-  if (percent > 70) msg = uiText[lang].high;
+  scoreEl.innerText = percent + "%";
 
-  document.getElementById("message").innerText = msg;
+  // 🔴🟡🟢 COLOR + MESSAGE LOGIC
+  if (percent <= 33) {
+    scoreEl.style.color = "#ef4444"; // RED
+    msgEl.innerText = uiText[lang].low;
+  } 
+  else if (percent <= 66) {
+    scoreEl.style.color = "#facc15"; // YELLOW
+    msgEl.innerText = uiText[lang].mid;
+  } 
+  else {
+    scoreEl.style.color = "#22c55e"; // GREEN
+    msgEl.innerText = uiText[lang].high;
+  }
 }
 
 function goSpin() {
