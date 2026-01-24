@@ -2,7 +2,7 @@
 <html lang="hi">
 <head>
   <meta charset="UTF-8">
-  <title>अनुभूति चक्र</title>
+  <title data-key="title">अनुभूति चक्र</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -19,6 +19,18 @@
       line-height: 1.5;
     }
 
+    .lang {
+      margin-bottom: 20px;
+    }
+
+    .lang button {
+      margin: 0 6px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+    }
+
     .wheel {
       width: 250px;
       height: 250px;
@@ -28,21 +40,18 @@
         red, orange, yellow, green, cyan, blue, violet, red
       );
       transition: transform 2.2s ease-out;
-
-      /* ✨ SOFT GLOW */
       box-shadow:
         0 0 25px rgba(255,255,255,0.18),
         0 0 60px rgba(255,255,255,0.10);
     }
 
-    /* spin ke waqt thoda zyada glow */
     .wheel.active {
       box-shadow:
         0 0 35px rgba(255,255,255,0.30),
         0 0 90px rgba(255,255,255,0.18);
     }
 
-    button {
+    button.spin-btn {
       padding: 15px 30px;
       font-size: 18px;
       background: #22c55e;
@@ -60,39 +69,60 @@
 
 <body>
 
-<h2>
+<div class="lang">
+  <button onclick="setLang('hi')">हिन्दी</button>
+  <button onclick="setLang('en')">English</button>
+</div>
+
+<h2 data-key="msg">
   अब सोचिए मत…<br>
   केवल अनुभव कीजिए
 </h2>
 
 <div id="wheel" class="wheel"></div>
 
-<button onclick="spin()">SPIN</button>
+<button class="spin-btn" onclick="spin()" data-key="spin">SPIN</button>
 
 <script>
-/*
-  Zero Quantum Frequency™
-  Spin Wheel – Pure Experience Mode
-*/
+/* 🌐 Language Text */
+const text = {
+  hi: {
+    title: "अनुभूति चक्र",
+    msg: "अब सोचिए मत…<br>केवल अनुभव कीजिए",
+    spin: "SPIN"
+  },
+  en: {
+    title: "Experience Wheel",
+    msg: "Do not think now…<br>Just experience",
+    spin: "SPIN"
+  }
+};
 
+function setLang(lang) {
+  localStorage.setItem("lang", lang);
+  document.documentElement.lang = lang;
+
+  document.querySelector("[data-key='title']").innerText = text[lang].title;
+  document.querySelector("[data-key='spin']").innerText = text[lang].spin;
+  document.querySelector("[data-key='msg']").innerHTML = text[lang].msg;
+}
+
+/* 🎡 Spin Logic */
 let wheel = document.getElementById("wheel");
 
 function spin() {
-
-  // glow activate
   wheel.classList.add("active");
 
-  // random + extra rotation (3 rounds)
   let rotation = Math.floor(Math.random() * 360) + 1080;
-
   wheel.style.transform = "rotate(" + rotation + "deg)";
 
-  // spin ke baad final page
   setTimeout(() => {
     wheel.classList.remove("active");
     window.location.href = "advice.html";
   }, 3200);
 }
+
+setLang(localStorage.getItem("lang") || "hi");
 </script>
 
 </body>
