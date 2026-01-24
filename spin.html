@@ -14,14 +14,17 @@
       padding-top: 40px;
     }
 
-   .wheel {
+.wheel {
   width: 250px;
   height: 250px;
   border-radius: 50%;
   margin: 40px auto;
-  background: #333; /* JS से बदलेगा */
-  transition: transform 3s ease-out, background 0.6s ease;
+  background: conic-gradient(
+    red, orange, yellow, green, cyan, blue, violet, red
+  );
+  transition: transform 3s ease-out;
 }
+
 
 
     button {
@@ -46,60 +49,18 @@
 <script>
 /*
   Zero Quantum Frequency™
-  Spin Wheel – Meter controlled stop
+  Spin Wheel – Pure Experience Mode
 */
 
-// 1️⃣ meter se answers uthao
-let stored = localStorage.getItem("zqf_answers");
-let percent = 0;
-
-if (stored) {
-  let answers = JSON.parse(stored);
-  let score = answers.reduce((a, b) => a + b, 0); // max = 15
-  percent = Math.round((score / 15) * 100);
-}
-
-// 2️⃣ wheel element
 let wheel = document.getElementById("wheel");
 
-// 3️⃣ colour + angle range set karo
-let minAngle = 0;
-let maxAngle = 360;
-
-if (percent <= 33) {
-  // 🔴 RED – कर्तापन
-  wheel.style.background =
-    "conic-gradient(#dc2626, #f87171, #dc2626)";
-  minAngle = 0;
-  maxAngle = 120;
-}
-else if (percent <= 66) {
-  // 🟡 YELLOW – संक्रमण
-  wheel.style.background =
-    "conic-gradient(#facc15, #fde047, #facc15)";
-  minAngle = 121;
-  maxAngle = 240;
-}
-else {
-  // 🟢 GREEN – द्रष्टा
-  wheel.style.background =
-    "conic-gradient(#16a34a, #4ade80, #16a34a)";
-  minAngle = 241;
-  maxAngle = 360;
-}
-
-// 4️⃣ spin function — bounded random
 function spin() {
-  // उसी range में random angle
-  let stopAngle =
-    Math.floor(Math.random() * (maxAngle - minAngle + 1)) + minAngle;
-
-  // extra full rotations for smoothness
-  let rotation = 720 + stopAngle;
+  // पूरी तरह random rotation
+  let rotation = Math.floor(Math.random() * 360) + 720;
 
   wheel.style.transform = "rotate(" + rotation + "deg)";
 
-  // final advice page
+  // spin के बाद final page
   setTimeout(() => {
     window.location.href = "advice.html";
   }, 3200);
