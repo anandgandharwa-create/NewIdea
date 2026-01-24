@@ -14,19 +14,33 @@
       padding-top: 40px;
     }
 
-.wheel {
-  width: 250px;
-  height: 250px;
-  border-radius: 50%;
-  margin: 40px auto;
-  background: conic-gradient(
-    red, orange, yellow, green, cyan, blue, violet, red
-  );
- transition: transform 2.2s ease-out;
+    h2 {
+      font-weight: normal;
+      line-height: 1.5;
+    }
 
-}
+    .wheel {
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      margin: 40px auto;
+      background: conic-gradient(
+        red, orange, yellow, green, cyan, blue, violet, red
+      );
+      transition: transform 2.2s ease-out;
 
+      /* ✨ SOFT GLOW */
+      box-shadow:
+        0 0 25px rgba(255,255,255,0.18),
+        0 0 60px rgba(255,255,255,0.10);
+    }
 
+    /* spin ke waqt thoda zyada glow */
+    .wheel.active {
+      box-shadow:
+        0 0 35px rgba(255,255,255,0.30),
+        0 0 90px rgba(255,255,255,0.18);
+    }
 
     button {
       padding: 15px 30px;
@@ -35,13 +49,21 @@
       border: none;
       border-radius: 10px;
       cursor: pointer;
+      color: #020617;
+    }
+
+    button:active {
+      transform: scale(0.97);
     }
   </style>
 </head>
 
 <body>
 
-<h2>अब सोचिए मत…<br>केवल अनुभव कीजिए</h2>
+<h2>
+  अब सोचिए मत…<br>
+  केवल अनुभव कीजिए
+</h2>
 
 <div id="wheel" class="wheel"></div>
 
@@ -56,18 +78,22 @@
 let wheel = document.getElementById("wheel");
 
 function spin() {
-  // पूरी तरह random rotation
- let rotation = Math.floor(Math.random() * 360) + 1080;
 
- wheel.style.transform = "rotate(" + rotation + "deg)";
+  // glow activate
+  wheel.classList.add("active");
 
-  // spin के बाद final page
+  // random + extra rotation (3 rounds)
+  let rotation = Math.floor(Math.random() * 360) + 1080;
+
+  wheel.style.transform = "rotate(" + rotation + "deg)";
+
+  // spin ke baad final page
   setTimeout(() => {
+    wheel.classList.remove("active");
     window.location.href = "advice.html";
   }, 3200);
 }
 </script>
-
 
 </body>
 </html>
