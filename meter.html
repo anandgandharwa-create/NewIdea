@@ -67,10 +67,15 @@
   <button onclick="setLang('en')">English</button>
 </div>
 
-<div class="meter-box">
-  <div class="score" id="score">0%</div>
-  <div class="message" id="message"></div>
+<div class="gauge">
+  <div class="gauge-fill" id="gaugeFill"></div>
+  <div class="gauge-cover">
+    <span id="score">0%</span>
+  </div>
 </div>
+
+<div class="message" id="message"></div>
+
 
 <button class="btn" onclick="goSpin()" data-key="next">
   आगे बढ़ें
