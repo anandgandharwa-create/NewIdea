@@ -22,6 +22,13 @@
       color: #94a3b8;
       margin-bottom: 30px;
     }
+    .lang button {
+      margin: 0 6px 20px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+    }
     .meter-box {
       background: rgba(255,255,255,0.05);
       padding: 30px;
@@ -36,14 +43,6 @@
     .message {
       font-size: 18px;
       line-height: 1.6;
-      color: #e5e7eb;
-    }
-    .lang button {
-      margin: 0 6px 20px;
-      padding: 6px 12px;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
     }
     .btn {
       margin-top: 30px;
@@ -73,10 +72,12 @@
   <div class="message" id="message"></div>
 </div>
 
-<button class="btn" onclick="goBack()" data-key="back">पुनः प्रारंभ करें</button>
+<button class="btn" onclick="goBack()" data-key="back">
+  पुनः प्रारंभ करें
+</button>
 
 <script>
-/* 🌐 Language UI text */
+/* 🌐 Language Text */
 const uiText = {
   hi: {
     title: "Zero Quantum Frequency™",
@@ -111,8 +112,10 @@ function showResult() {
   const lang = localStorage.getItem("lang") || "hi";
   const answers = JSON.parse(localStorage.getItem("zqf_answers")) || [];
 
-  const total = answers.reduce((a,b) => a + b, 0);
-  const percent = Math.round((total / (answers.length * 3)) * 100);
+  const total = answers.reduce((a, b) => a + b, 0);
+  const percent = answers.length
+    ? Math.round((total / (answers.length * 3)) * 100)
+    : 0;
 
   document.getElementById("score").innerText = percent + "%";
 
