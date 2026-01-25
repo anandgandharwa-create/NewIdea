@@ -7,7 +7,7 @@
 
   <style>
     body {
-      background: radial-gradient(circle, #020617, #000000);
+      background: radial-gradient(circle, #020617, #000);
       color: #e5e7eb;
       font-family: sans-serif;
       padding: 30px;
@@ -34,6 +34,8 @@
       border-radius: 8px;
       border: none;
       cursor: pointer;
+      background:#1e293b;
+      color:#e5e7eb;
     }
     .card {
       background: rgba(255,255,255,0.05);
@@ -47,7 +49,7 @@
       margin-bottom: 10px;
     }
     .practice {
-      background: rgba(34,197,94,0.1);
+      background: rgba(34,197,94,0.12);
       border-left: 4px solid #22c55e;
       padding: 20px;
       border-radius: 10px;
@@ -71,9 +73,6 @@
       cursor: pointer;
       color: #020617;
     }
-    .install-box button {
-      margin-top: 15px;
-    }
     .manual-hint {
       font-size: 13px;
       opacity: 0.7;
@@ -92,7 +91,7 @@
 
 <h1 data-key="title">Zero Quantum Frequency™</h1>
 <div class="subtitle" data-key="subtitle">
-  यह उत्तर नहीं है - यह स्मरण है
+  यह उत्तर नहीं है – यह स्मरण है
 </div>
 
 <div class="card">
@@ -126,52 +125,82 @@
 </button>
 
 <script>
-/* 🌐 UI TEXT */
+/* 🌐 LANGUAGE TEXT */
 const ui = {
   hi: {
     titleTag: "Zero Quantum Frequency™ – मार्ग संकेत",
     title: "Zero Quantum Frequency™",
-    subtitle: "यह उत्तर नहीं है - यह स्मरण है",
+    subtitle: "यह उत्तर नहीं है – यह स्मरण है",
     practiceTitle: "आज के लिए सूक्ष्म अभ्यास",
     installText: "यदि यह अनुभव उपयोगी लगा हो,<br>तो आप इसे अपने जीवन में स्थायी रूप से जोड़ सकते हैं।",
     installBtn: "इस अनुभव को अपने फोन में जोड़ें",
     manual: "Chrome में ⋮ मेनू खोलें<br>और “Add to Home screen” चुनें",
     restart: "फिर से अनुभव करें",
 
-    lowTitle: "कर्तापन की अवस्था",
-    lowText: "इस समय आप जीवन को मुख्यतः करने वाले के रूप में अनुभव कर रहे हैं। यह गलत नहीं है, पर यहीं से तनाव और थकान जन्म लेती है।",
-    lowPractice: "आज केवल यह देखें कि आप दिन में कितनी बार नियंत्रण करना चाहते हैं। कुछ भी बदलने की कोशिश न करें।",
+    meter: {
+      low: {
+        title: "कर्तापन की अवस्था",
+        text: "इस समय आप जीवन को मुख्यतः करने वाले के रूप में अनुभव कर रहे हैं।",
+        practice: "आज केवल यह देखें कि प्रतिक्रिया कैसे उठती है। कुछ बदलने की कोशिश न करें।"
+      },
+      mid: {
+        title: "संक्रमण की अवस्था",
+        text: "आप करने और देखने के बीच खड़े हैं।",
+        practice: "हर प्रतिक्रिया से पहले दो श्वास लें और उसे देखें।"
+      },
+      high: {
+        title: "द्रष्टा भाव की अवस्था",
+        text: "आप प्रतिक्रिया से पहले देखने लगे हैं।",
+        practice: "जो घट रहा है, उसे घटने दें। कुछ जोड़ने की आवश्यकता नहीं।"
+      }
+    },
 
-    midTitle: "संक्रमण की अवस्था",
-    midText: "आप देखने और करने के बीच खड़े हैं। यहीं से जागरूकता का द्वार खुलता है।",
-    midPractice: "जब भी कोई प्रतिक्रिया उठे, दो श्वास लें और देखें - क्या आप उसे बिना बदले देख सकते हैं?",
-
-    highTitle: "द्रष्टा भाव की अवस्था",
-    highText: "आप प्रतिक्रिया से पहले देखने लगे हैं। यहीं Zero Quantum Frequency की झलक मिलती है।",
-    highPractice: "आज कुछ भी विशेष करने की आवश्यकता नहीं। जो घट रहा है, उसे घटने दें।"
+    spin: {
+      reaction: "आज प्रतिक्रिया को रोकने की ज़रूरत नहीं। केवल उसे पहचानें।",
+      control: "जहाँ नियंत्रण की इच्छा उठे, वहाँ थोड़ा ढील दें।",
+      awareness: "देखना स्वयं परिवर्तन है। इसी में ठहरें।",
+      witness: "आप साक्षी भाव के निकट हैं। मौन को अनुभव करें।",
+      peace: "कुछ भी करने की आवश्यकता नहीं। शांति पहले से है।",
+      silence: "मौन स्वयं मार्गदर्शन कर रहा है।"
+    }
   },
 
   en: {
-    titleTag: "Zero Quantum Frequency™ - Guidance",
+    titleTag: "Zero Quantum Frequency™ – Guidance",
     title: "Zero Quantum Frequency™",
-    subtitle: "Not an answer - a remembrance",
+    subtitle: "Not an answer – a remembrance",
     practiceTitle: "A subtle practice for today",
-    installText: "If this experience felt meaningful,<br>you can make it a part of your daily life.",
+    installText: "If this experience felt meaningful,<br>you can make it part of your daily life.",
     installBtn: "Add this experience to your phone",
     manual: "Open Chrome ⋮ menu<br>and choose “Add to Home screen”",
     restart: "Experience again",
 
-    lowTitle: "State of Doership",
-    lowText: "At this moment you experience life mainly as the doer. This is not wrong, but this is where stress and fatigue arise.",
-    lowPractice: "Today, simply notice how many times you try to control things. Do not try to change anything.",
+    meter: {
+      low: {
+        title: "State of Doership",
+        text: "You are experiencing life mainly as the doer.",
+        practice: "Today, simply notice reactions without trying to change them."
+      },
+      mid: {
+        title: "State of Transition",
+        text: "You are between doing and witnessing.",
+        practice: "Before reacting, take two breaths and observe."
+      },
+      high: {
+        title: "State of Witnessing",
+        text: "You are beginning to see before reacting.",
+        practice: "Let whatever happens, happen."
+      }
+    },
 
-    midTitle: "State of Transition",
-    midText: "You are standing between doing and witnessing. This is where awareness begins to open.",
-    midPractice: "Whenever a reaction arises, take two breaths and see - can you watch it without changing it?",
-
-    highTitle: "State of Witnessing",
-    highText: "You are beginning to see before reacting. This is a glimpse of Zero Quantum Frequency.",
-    highPractice: "Nothing special needs to be done today. Let whatever happens, happen."
+    spin: {
+      reaction: "Do not stop the reaction. Simply notice it.",
+      control: "Where control arises, gently soften.",
+      awareness: "Seeing itself is the transformation.",
+      witness: "You are close to witnessing. Rest here.",
+      peace: "Nothing needs to be done. Peace is already present.",
+      silence: "Silence itself is guiding you."
+    }
   }
 };
 
@@ -188,36 +217,27 @@ function setLang(lang) {
   renderResult();
 }
 
-/* 🔑 RESULT LOGIC */
 function renderResult() {
-  let stored = localStorage.getItem("zqf_answers");
-  let percent = 0;
-
-  if (stored) {
-    let answers = JSON.parse(stored);
-    let score = answers.reduce((a, b) => a + b, 0);
-    percent = Math.round((score / 15) * 100);
-  }
-
   const lang = localStorage.getItem("lang") || "hi";
   const t = ui[lang];
 
-  if (percent <= 33) {
-    resultTitle.innerText = t.lowTitle;
-    resultText.innerText = t.lowText;
-    practiceText.innerText = t.lowPractice;
-  } else if (percent <= 66) {
-    resultTitle.innerText = t.midTitle;
-    resultText.innerText = t.midText;
-    practiceText.innerText = t.midPractice;
-  } else {
-    resultTitle.innerText = t.highTitle;
-    resultText.innerText = t.highText;
-    practiceText.innerText = t.highPractice;
-  }
+  // meter score
+  const answers = JSON.parse(localStorage.getItem("zqf_answers")) || [];
+  let percent = answers.length
+    ? Math.round(answers.reduce((a,b)=>a+b,0) / (answers.length*3) * 100)
+    : 0;
+
+  let level = percent <= 33 ? "low" : percent <= 66 ? "mid" : "high";
+
+  // spin colour
+  const spin = localStorage.getItem("spin_result") || "awareness";
+
+  resultTitle.innerText = t.meter[level].title;
+  resultText.innerText = t.meter[level].text;
+  practiceText.innerText = t.spin[spin] || t.meter[level].practice;
 }
 
-/* 🔐 INSTALL LOGIC */
+/* INSTALL */
 let deferredPrompt;
 const installBtn = document.getElementById("installBtn");
 const installBox = document.getElementById("installBox");
@@ -227,7 +247,7 @@ if (window.matchMedia('(display-mode: standalone)').matches) {
   installBox.style.display = "none";
 }
 
-window.addEventListener("beforeinstallprompt", (e) => {
+window.addEventListener("beforeinstallprompt", e => {
   e.preventDefault();
   deferredPrompt = e;
 });
@@ -238,13 +258,9 @@ installBtn.addEventListener("click", async () => {
     return;
   }
   deferredPrompt.prompt();
-  const result = await deferredPrompt.userChoice;
-  if (result.outcome === "accepted") installBox.style.display = "none";
-  deferredPrompt = null;
-});
-
-window.addEventListener("appinstalled", () => {
+  await deferredPrompt.userChoice;
   installBox.style.display = "none";
+  deferredPrompt = null;
 });
 
 setLang(localStorage.getItem("lang") || "hi");
