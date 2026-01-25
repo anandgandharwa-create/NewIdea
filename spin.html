@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-  <div class="lang">
-  <button onclick="setLang('hi')">हिन्दी</button>
-  <button onclick="setLang('en')">English</button>
-</div>
-
   <meta charset="UTF-8">
   <title>अनुभूति चक्र</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,10 +8,23 @@
   <style>
     body {
       background: #020617;
-      color: white;
+      color: #e5e7eb;
       text-align: center;
       font-family: sans-serif;
-      padding-top: 40px;
+      padding-top: 30px;
+    }
+
+    .lang {
+      margin-bottom: 15px;
+    }
+    .lang button {
+      margin: 0 6px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      background: #1e293b;
+      color: #e5e7eb;
     }
 
     h2 {
@@ -29,7 +37,7 @@
       width: 250px;
       height: 250px;
       border-radius: 50%;
-      margin: 40px auto;
+      margin: 30px auto;
       background: conic-gradient(
         red 0deg 60deg,
         orange 60deg 120deg,
@@ -42,6 +50,8 @@
       box-shadow:
         0 0 25px rgba(255,255,255,0.18),
         0 0 60px rgba(255,255,255,0.10);
+      display: block;
+      visibility: visible;
     }
 
     .wheel.active {
@@ -50,7 +60,7 @@
         0 0 90px rgba(255,255,255,0.18);
     }
 
-    button {
+    button.spin-btn {
       padding: 15px 30px;
       font-size: 18px;
       background: #22c55e;
@@ -59,37 +69,30 @@
       cursor: pointer;
       color: #020617;
     }
-    .lang {
-  text-align: center;
-  margin-bottom: 15px;
-}
-.lang button {
-  margin: 0 6px;
-  padding: 6px 12px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  background: #1e293b;
-  color: #e5e7eb;
-}
-
   </style>
 </head>
 
 <body>
 
-<h2>
-  अब सोचिए मत…<br>
-  केवल अनुभव कीजिए
+<!-- 🌐 LANGUAGE TOGGLE -->
+<div class="lang">
+  <button onclick="setSpinLang('hi')">हिन्दी</button>
+  <button onclick="setSpinLang('en')">English</button>
+</div>
+
+<!-- 🧘 TEXT -->
 <h2 data-key="spinText">
   अब सोचिए मत…<br>
   केवल अनुभव कीजिए
 </h2>
 
-<button onclick="spin()" data-key="spinBtn">SPIN</button>
+<!-- 🎡 WHEEL -->
+<div id="wheel" class="wheel"></div>
+
+<button class="spin-btn" onclick="spin()" data-key="spinBtn">SPIN</button>
 
 <script>
-/* 🌐 SPIN LANGUAGE */
+/* 🌐 LANGUAGE TEXT */
 const spinText = {
   hi: {
     spinText: "अब सोचिए मत…<br>केवल अनुभव कीजिए",
@@ -101,7 +104,7 @@ const spinText = {
   }
 };
 
-function setLang(lang) {
+function setSpinLang(lang) {
   localStorage.setItem("lang", lang);
   document.documentElement.lang = lang;
 
@@ -110,9 +113,53 @@ function setLang(lang) {
   });
 }
 
-setLang(localStorage.getItem("lang") || "hi");
-</script>
+setSpinLang(localStorage.getItem("lang") || "hi");
 
+/* 🎨 SPIN ZONES */
+const zones = [
+  { name: "reaction", from: 0,   to: 60  },
+  { name: "control",  from: 60,  to: 120 },
+  { name: "awareness",from: 120, to: 180 },
+  { name: "witness",  from: 180, to: 240 },
+  { name: "peace",    from: 240, to: 300 },
+  { name: "silence",  from: 300, to: 360 }
+];
+
+const wheel = document.getElementById("wheel");
+
+function getScorePercent() {
+  const answers = JSON.parse(localStorage.getItem("zqf_answers")) || [];
+  if (!answers.length) return 50;
+  const total = answers.reduce((a,b)=>a+b,0);
+  return Math.round((total/(answers.length*3))*100);
+}
+
+function spin() {
+  wheel.classList.add("active");
+
+  const percent = getScorePercent();
+  let base = 1080;
+  let offset;
+
+  if (percent <= 33) offset = Math.random() * 360;
+  else if (percent <= 66) offset = 120 + Math.random() * 120;
+  else offset = 180 + Math.random() * 60;
+
+  const finalRotation = base + offset;
+  wheel.style.transform = `rotate(${finalRotation}deg)`;
+
+  const finalDeg = finalRotation % 360;
+  const hit = zones.find(z => finalDeg >= z.from && finalDeg < z.to);
+
+  // 🔑 SAVE RESULT FOR ADVICE PAGE
+  localStorage.setItem("spin_result", hit.name);
+
+  setTimeout(() => {
+    wheel.classList.remove("active");
+    window.location.href = "advice.html";
+  }, 3500);
+}
+</script>
 
 </body>
 </html>
