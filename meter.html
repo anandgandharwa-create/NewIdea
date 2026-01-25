@@ -1,92 +1,170 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Zero Quantum Frequency™ – Meter</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#020617">
 
   <style>
-   .gauge {
-  width: 260px;
-  height: 130px;
-  margin: 0 auto 30px;
-  background: rgba(255,255,255,0.08);
-  border-radius: 260px 260px 0 0;
-  position: relative;
-  overflow: hidden;
-}
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #020617, #000);
+      color: #e5e7eb;
+      font-family: system-ui, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px 16px;
+    }
 
-.gauge-fill {
-  width: 100%;
-  height: 100%;
-  background: #22c55e;
-  position: absolute;
-  bottom: 0;
-  transform-origin: center bottom;
-  transform: rotate(-90deg);
-  transition: transform 1.2s ease, background 0.5s ease;
-}
+    h1 {
+      color: #facc15;
+      margin-bottom: 6px;
+      text-align: center;
+    }
 
-.gauge-cover {
-  width: 200px;
-  height: 100px;
-  background: #020617;
-  border-radius: 200px 200px 0 0;
-  position: absolute;
-  bottom: 0;
-  left: 30px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  padding-bottom: 10px;
-}
+    .subtitle {
+      color: #94a3b8;
+      margin-bottom: 20px;
+      text-align: center;
+    }
 
-.gauge-cover span {
-  font-size: 32px;
-  font-weight: bold;
-}
-/* 🌈 GAUGE GLOW */
-.gauge {
-  box-shadow:
-    0 0 25px rgba(34,197,94,0.18),
-    0 0 70px rgba(34,197,94,0.10);
-}
+    .lang {
+      margin-bottom: 25px;
+    }
 
-/* 🎯 NEEDLE */
-.needle {
-  width: 4px;
-  height: 110px;
-  background: white;
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform-origin: bottom center;
-  transform: rotate(-90deg);
-  border-radius: 4px;
-  box-shadow:
-    0 0 12px rgba(255,255,255,0.7),
-    0 0 30px rgba(255,255,255,0.3);
-  transition: transform 1.2s ease;
-}
+    .lang button {
+      margin: 0 6px;
+      padding: 6px 14px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      background: #1e293b;
+      color: #e5e7eb;
+    }
 
+    /* ===== GAUGE ===== */
+
+    .gauge {
+      width: 280px;
+      height: 140px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 280px 280px 0 0;
+      background: #020617;
+      box-shadow:
+        0 0 40px rgba(255,255,255,0.06),
+        inset 0 0 60px rgba(0,0,0,0.8);
+      margin-bottom: 20px;
+    }
+
+    .gauge-fill {
+      width: 100%;
+      height: 100%;
+      background: conic-gradient(
+        #ef4444,
+        #f97316,
+        #facc15,
+        #22c55e,
+        #22d3ee,
+        #6366f1,
+        #a855f7
+      );
+      position: absolute;
+      bottom: 0;
+      transform-origin: center bottom;
+      transform: rotate(-90deg);
+      transition: transform 1.4s ease;
+      filter: blur(0.2px);
+    }
+
+    .needle {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 3px;
+      height: 120px;
+      background: white;
+      transform-origin: bottom center;
+      transform: rotate(-90deg);
+      border-radius: 3px;
+      box-shadow:
+        0 0 12px rgba(255,255,255,0.9),
+        0 0 30px rgba(255,255,255,0.4);
+      transition: transform 1.4s ease;
+      z-index: 5;
+    }
+
+    .needle::after {
+      content: "";
+      position: absolute;
+      bottom: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 14px;
+      height: 14px;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 0 20px rgba(255,255,255,0.8);
+    }
+
+    .gauge-cover {
+      position: absolute;
+      bottom: 0;
+      left: 40px;
+      width: 200px;
+      height: 100px;
+      background: #020617;
+      border-radius: 200px 200px 0 0;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 12px;
+      z-index: 4;
+    }
+
+    .gauge-cover span {
+      font-size: 32px;
+      font-weight: bold;
+      color: #e5e7eb;
+    }
+
+    .message {
+      max-width: 320px;
+      text-align: center;
+      font-size: 17px;
+      line-height: 1.6;
+      color: #e5e7eb;
+      margin-top: 10px;
+    }
+
+    .btn {
+      margin-top: 30px;
+      padding: 14px 26px;
+      font-size: 16px;
+      background: #22c55e;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      color: #020617;
+    }
   </style>
 </head>
 
 <body>
 
-<h1 data-key="title">Zero Quantum Frequency™</h1>
-<div class="subtitle" data-key="subtitle">आपका वर्तमान स्तर</div>
+<h1>Zero Quantum Frequency™</h1>
+<div class="subtitle">Your current level</div>
 
 <div class="lang">
-  <button onclick="setLang('hi')">हिन्दी</button>
-  <button onclick="setLang('en')">English</button>
+  <button>हिन्दी</button>
+  <button>English</button>
 </div>
 
 <div class="gauge">
   <div class="gauge-fill" id="gaugeFill"></div>
   <div class="needle" id="needle"></div>
-
   <div class="gauge-cover">
     <span id="score">0%</span>
   </div>
@@ -94,85 +172,26 @@
 
 <div class="message" id="message"></div>
 
-
-<button class="btn" onclick="goSpin()" data-key="next">
-  आगे बढ़ें
+<button class="btn" onclick="location.href='spin.html'">
+  Continue
 </button>
 
 <script>
-/* 🌐 Language Text */
-const uiText = {
-  hi: {
-    title: "Zero Quantum Frequency™",
-    subtitle: "आपका वर्तमान स्तर",
-    back: "पुनः प्रारंभ करें",
-    low: "आप अधिकतर प्रतिक्रिया से जी रहे हैं। अभी देखने की शुरुआत है।",
-    mid: "आप प्रतिक्रिया और साक्षी के बीच हैं। स्पष्टता बढ़ रही है।",
-    high: "आप अधिकतर साक्षी भाव में हैं। गहरी शांति उपलब्ध है।"
-  },
-  en: {
-    title: "Zero Quantum Frequency™",
-    subtitle: "Your current level",
-    back: "Restart",
-    low: "You are mostly living in reaction. Awareness is beginning.",
-    mid: "You are between reaction and witnessing. Clarity is growing.",
-    high: "You are mostly in witnessing. Deep calm is available."
-  }
-};
+const answers = JSON.parse(localStorage.getItem("zqf_answers")) || [];
+const total = answers.reduce((a,b)=>a+b,0);
+const percent = answers.length ? Math.round((total/(answers.length*3))*100) : 0;
 
-function setLang(lang) {
-  localStorage.setItem("lang", lang);
-  document.documentElement.lang = lang;
+const angle = (percent/100)*180 - 90;
 
-  document.querySelectorAll("[data-key]").forEach(el => {
-    el.innerText = uiText[lang][el.dataset.key];
-  });
+document.getElementById("score").innerText = percent + "%";
+document.getElementById("gaugeFill").style.transform = `rotate(${angle}deg)`;
+document.getElementById("needle").style.transform = `rotate(${angle}deg)`;
 
-  showResult();
-}
+let msg = "You are mostly living in reaction. Awareness is beginning.";
+if (percent > 66) msg = "You are mostly in witnessing. A deep calm is available.";
+else if (percent > 33) msg = "You are between reaction and awareness. Clarity is growing.";
 
-function showResult() {
-  const lang = localStorage.getItem("lang") || "hi";
-  const answers = JSON.parse(localStorage.getItem("zqf_answers")) || [];
-
-  const total = answers.reduce((a, b) => a + b, 0);
-  const percent = answers.length
-    ? Math.round((total / (answers.length * 3)) * 100)
-    : 0;
-
-  const scoreEl = document.getElementById("score");
-  const fillEl = document.getElementById("gaugeFill");
-  const needleEl = document.getElementById("needle");
-  const msgEl = document.getElementById("message");
-
-  scoreEl.innerText = percent + "%";
-
-  // सुई को घुमाओ
-  const angle = (percent / 100) * 180 - 90;
-  fillEl.style.transform = `rotate(${angle}deg)`;
-  needleEl.style.transform = `rotate(${angle}deg)`;
-
-  if (percent <= 33) {
-    fillEl.style.background = "#ef4444"; // लाल
-    msgEl.innerText = uiText[lang].low;
-  }
-  else if (percent <= 66) {
-    fillEl.style.background = "#facc15"; // पीला
-    msgEl.innerText = uiText[lang].mid;
-  }
-  else {
-    fillEl.style.background = "#22c55e"; // हरा
-    msgEl.innerText = uiText[lang].high;
-  }
-}
-
-
-
-function goSpin() {
-  window.location.href = "spin.html";
-}
-
-setLang(localStorage.getItem("lang") || "hi");
+document.getElementById("message").innerText = msg;
 </script>
 
 </body>
