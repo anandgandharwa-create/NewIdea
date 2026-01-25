@@ -2,7 +2,7 @@
 <html lang="hi">
 <head>
   <meta charset="UTF-8">
-  <title data-key="title">अनुभूति चक्र</title>
+  <title>अनुभूति चक्र</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -17,18 +17,7 @@
     h2 {
       font-weight: normal;
       line-height: 1.5;
-    }
-
-    .lang {
       margin-bottom: 20px;
-    }
-
-    .lang button {
-      margin: 0 6px;
-      padding: 6px 12px;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
     }
 
     .wheel {
@@ -39,7 +28,7 @@
       background: conic-gradient(
         red, orange, yellow, green, cyan, blue, violet, red
       );
-      transition: transform 2.2s ease-out;
+      transition: transform 3.2s cubic-bezier(0.17, 0.67, 0.12, 0.99);
       box-shadow:
         0 0 25px rgba(255,255,255,0.18),
         0 0 60px rgba(255,255,255,0.10);
@@ -51,7 +40,7 @@
         0 0 90px rgba(255,255,255,0.18);
     }
 
-    button.spin-btn {
+    button {
       padding: 15px 30px;
       font-size: 18px;
       background: #22c55e;
@@ -60,69 +49,68 @@
       cursor: pointer;
       color: #020617;
     }
-
-    button:active {
-      transform: scale(0.97);
-    }
   </style>
 </head>
 
 <body>
 
-<div class="lang">
-  <button onclick="setLang('hi')">हिन्दी</button>
-  <button onclick="setLang('en')">English</button>
-</div>
-
-<h2 data-key="msg">
+<h2>
   अब सोचिए मत…<br>
   केवल अनुभव कीजिए
 </h2>
 
 <div id="wheel" class="wheel"></div>
 
-<button class="spin-btn" onclick="spin()" data-key="spin">SPIN</button>
+<button onclick="spin()">SPIN</button>
 
 <script>
-/* 🌐 Language Text */
-const text = {
-  hi: {
-    title: "अनुभूति चक्र",
-    msg: "अब सोचिए मत…<br>केवल अनुभव कीजिए",
-    spin: "SPIN"
-  },
-  en: {
-    title: "Experience Wheel",
-    msg: "Do not think now…<br>Just experience",
-    spin: "SPIN"
-  }
-};
+/* 🌿 SPIN LINKED WITH METER SCORE */
 
-function setLang(lang) {
-  localStorage.setItem("lang", lang);
-  document.documentElement.lang = lang;
+const wheel = document.getElementById("wheel");
 
-  document.querySelector("[data-key='title']").innerText = text[lang].title;
-  document.querySelector("[data-key='spin']").innerText = text[lang].spin;
-  document.querySelector("[data-key='msg']").innerHTML = text[lang].msg;
+// meter ke answers se % nikalo
+function getScorePercent() {
+  const answers = JSON.parse(localStorage.getItem("zqf_answers")) || [];
+  if (!answers.length) return 50; // default
+
+  const total = answers.reduce((a, b) => a + b, 0);
+  return Math.round((total / (answers.length * 3)) * 100);
 }
-
-/* 🎡 Spin Logic */
-let wheel = document.getElementById("wheel");
 
 function spin() {
   wheel.classList.add("active");
 
-  let rotation = Math.floor(Math.random() * 360) + 1080;
-  wheel.style.transform = "rotate(" + rotation + "deg)";
+  const percent = getScorePercent();
+
+  /*
+    LOGIC:
+    low score  → zyada randomness
+    high score → centred / balanced stop
+  */
+
+  let baseRotation = 1080; // 3 rounds minimum
+  let randomOffset;
+
+  if (percent <= 33) {
+    // 🔴 low awareness → chaotic
+    randomOffset = Math.random() * 360;
+  } else if (percent <= 66) {
+    // 🟡 medium → semi-balanced
+    randomOffset = 120 + Math.random() * 120;
+  } else {
+    // 🟢 high → centred & calm
+    randomOffset = 170 + Math.random() * 20;
+  }
+
+  const finalRotation = baseRotation + randomOffset;
+
+  wheel.style.transform = `rotate(${finalRotation}deg)`;
 
   setTimeout(() => {
     wheel.classList.remove("active");
     window.location.href = "advice.html";
-  }, 3200);
+  }, 3400);
 }
-
-setLang(localStorage.getItem("lang") || "hi");
 </script>
 
 </body>
