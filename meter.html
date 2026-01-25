@@ -158,9 +158,10 @@
 <div class="subtitle" data-key="subtitle">Your current level</div>
 
 <div class="lang">
-  <button>हिन्दी</button>
-  <button>English</button>
+  <button onclick="setLang('hi')">हिन्दी</button>
+  <button onclick="setLang('en')">English</button>
 </div>
+
 
 <div class="gauge">
   <div class="gauge-fill" id="gaugeFill"></div>
@@ -170,9 +171,9 @@
   </div>
 </div>
 
-<div class="message" id="message"></div>
+<div class="message" id="message" data-key="result"></div>
 
-<button class="btn" onclick="location.href='spin.html'">
+<button class="btn" onclick="location.href='spin.html'" data-key="next">
   Continue
 </button>
 
@@ -187,12 +188,27 @@ document.getElementById("score").innerText = percent + "%";
 document.getElementById("gaugeFill").style.transform = `rotate(${angle}deg)`;
 document.getElementById("needle").style.transform = `rotate(${angle}deg)`;
 
-let msg = "You are mostly living in reaction. Awareness is beginning.";
-if (percent > 66) msg = "You are mostly in witnessing. A deep calm is available.";
-else if (percent > 33) msg = "You are between reaction and awareness. Clarity is growing.";
+let msgKey = "low";
+if (percent > 66) msgKey = "high";
+else if (percent > 33) msgKey = "mid";
+
+document.getElementById("message").innerText =
+  lang === "hi"
+  ? {
+      low: "आप अधिकतर प्रतिक्रिया में जी रहे हैं। जागरूकता आरंभ हो रही है।",
+      mid: "आप प्रतिक्रिया और साक्षी के बीच हैं। स्पष्टता बढ़ रही है।",
+      high: "आप साक्षी भाव में हैं। गहरी शांति उपलब्ध है।"
+    }[msgKey]
+  : {
+      low: "You are mostly living in reaction. Awareness is beginning.",
+      mid: "You are between reaction and awareness. Clarity is growing.",
+      high: "You are mostly in witnessing. A deep calm is available."
+    }[msgKey];
+
 
 document.getElementById("message").innerText = msg;
 </script>
+<script src="lang.js"></script>
 
 </body>
 </html>
