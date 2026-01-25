@@ -1,6 +1,6 @@
 const words = {
   hi: {
-    title: "ज़ीरो क्वांटम फ़्रीक्वेंसी",
+    title: "Zero Quantum Frequency",
     subtitle: "यह उत्तर नहीं है - यह स्मरण है",
     desc: "यह ऐप चेतना और ऊर्जा पर आधारित है"
   },
