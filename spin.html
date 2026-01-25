@@ -26,9 +26,14 @@
       border-radius: 50%;
       margin: 40px auto;
       background: conic-gradient(
-        red, orange, yellow, green, cyan, blue, violet, red
+        red 0deg 60deg,
+        orange 60deg 120deg,
+        yellow 120deg 180deg,
+        green 180deg 240deg,
+        cyan 240deg 300deg,
+        violet 300deg 360deg
       );
-      transition: transform 3.2s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+      transition: transform 3.4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
       box-shadow:
         0 0 25px rgba(255,255,255,0.18),
         0 0 60px rgba(255,255,255,0.10);
@@ -64,52 +69,50 @@
 <button onclick="spin()">SPIN</button>
 
 <script>
-/* 🌿 SPIN LINKED WITH METER SCORE */
-
 const wheel = document.getElementById("wheel");
 
-// meter ke answers se % nikalo
+/* 🎨 Colour zones (0–360) */
+const zones = [
+  { color: "red",    name: "reaction",  from: 0,   to: 60  },
+  { color: "orange", name: "control",   from: 60,  to: 120 },
+  { color: "yellow", name: "awareness", from: 120, to: 180 },
+  { color: "green",  name: "witness",   from: 180, to: 240 },
+  { color: "cyan",   name: "peace",     from: 240, to: 300 },
+  { color: "violet", name: "silence",   from: 300, to: 360 }
+];
+
 function getScorePercent() {
   const answers = JSON.parse(localStorage.getItem("zqf_answers")) || [];
-  if (!answers.length) return 50; // default
-
-  const total = answers.reduce((a, b) => a + b, 0);
-  return Math.round((total / (answers.length * 3)) * 100);
+  if (!answers.length) return 50;
+  const total = answers.reduce((a,b)=>a+b,0);
+  return Math.round((total/(answers.length*3))*100);
 }
 
 function spin() {
   wheel.classList.add("active");
 
   const percent = getScorePercent();
+  let base = 1080;
+  let offset;
 
-  /*
-    LOGIC:
-    low score  → zyada randomness
-    high score → centred / balanced stop
-  */
+  if (percent <= 33) offset = Math.random() * 360;
+  else if (percent <= 66) offset = 120 + Math.random() * 120;
+  else offset = 180 + Math.random() * 60;
 
-  let baseRotation = 1080; // 3 rounds minimum
-  let randomOffset;
-
-  if (percent <= 33) {
-    // 🔴 low awareness → chaotic
-    randomOffset = Math.random() * 360;
-  } else if (percent <= 66) {
-    // 🟡 medium → semi-balanced
-    randomOffset = 120 + Math.random() * 120;
-  } else {
-    // 🟢 high → centred & calm
-    randomOffset = 170 + Math.random() * 20;
-  }
-
-  const finalRotation = baseRotation + randomOffset;
-
+  const finalRotation = base + offset;
   wheel.style.transform = `rotate(${finalRotation}deg)`;
+
+  // 🔍 Find colour
+  const finalDeg = finalRotation % 360;
+  const hit = zones.find(z => finalDeg >= z.from && finalDeg < z.to);
+
+  // save for advice page
+  localStorage.setItem("spin_result", hit.name);
 
   setTimeout(() => {
     wheel.classList.remove("active");
     window.location.href = "advice.html";
-  }, 3400);
+  }, 3500);
 }
 </script>
 
