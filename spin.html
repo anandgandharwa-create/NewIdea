@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
+  <div class="lang">
+  <button onclick="setLang('hi')">हिन्दी</button>
+  <button onclick="setLang('en')">English</button>
+</div>
+
   <meta charset="UTF-8">
   <title>अनुभूति चक्र</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -54,6 +59,20 @@
       cursor: pointer;
       color: #020617;
     }
+    .lang {
+  text-align: center;
+  margin-bottom: 15px;
+}
+.lang button {
+  margin: 0 6px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: #1e293b;
+  color: #e5e7eb;
+}
+
   </style>
 </head>
 
@@ -62,59 +81,38 @@
 <h2>
   अब सोचिए मत…<br>
   केवल अनुभव कीजिए
+<h2 data-key="spinText">
+  अब सोचिए मत…<br>
+  केवल अनुभव कीजिए
 </h2>
 
-<div id="wheel" class="wheel"></div>
-
-<button onclick="spin()">SPIN</button>
+<button onclick="spin()" data-key="spinBtn">SPIN</button>
 
 <script>
-const wheel = document.getElementById("wheel");
+/* 🌐 SPIN LANGUAGE */
+const spinText = {
+  hi: {
+    spinText: "अब सोचिए मत…<br>केवल अनुभव कीजिए",
+    spinBtn: "घुमाएँ"
+  },
+  en: {
+    spinText: "Don’t think now…<br>Just experience",
+    spinBtn: "SPIN"
+  }
+};
 
-/* 🎨 Colour zones (0–360) */
-const zones = [
-  { color: "red",    name: "reaction",  from: 0,   to: 60  },
-  { color: "orange", name: "control",   from: 60,  to: 120 },
-  { color: "yellow", name: "awareness", from: 120, to: 180 },
-  { color: "green",  name: "witness",   from: 180, to: 240 },
-  { color: "cyan",   name: "peace",     from: 240, to: 300 },
-  { color: "violet", name: "silence",   from: 300, to: 360 }
-];
+function setLang(lang) {
+  localStorage.setItem("lang", lang);
+  document.documentElement.lang = lang;
 
-function getScorePercent() {
-  const answers = JSON.parse(localStorage.getItem("zqf_answers")) || [];
-  if (!answers.length) return 50;
-  const total = answers.reduce((a,b)=>a+b,0);
-  return Math.round((total/(answers.length*3))*100);
+  document.querySelectorAll("[data-key]").forEach(el => {
+    el.innerHTML = spinText[lang][el.dataset.key];
+  });
 }
 
-function spin() {
-  wheel.classList.add("active");
-
-  const percent = getScorePercent();
-  let base = 1080;
-  let offset;
-
-  if (percent <= 33) offset = Math.random() * 360;
-  else if (percent <= 66) offset = 120 + Math.random() * 120;
-  else offset = 180 + Math.random() * 60;
-
-  const finalRotation = base + offset;
-  wheel.style.transform = `rotate(${finalRotation}deg)`;
-
-  // 🔍 Find colour
-  const finalDeg = finalRotation % 360;
-  const hit = zones.find(z => finalDeg >= z.from && finalDeg < z.to);
-
-  // save for advice page
-  localStorage.setItem("spin_result", hit.name);
-
-  setTimeout(() => {
-    wheel.classList.remove("active");
-    window.location.href = "advice.html";
-  }, 3500);
-}
+setLang(localStorage.getItem("lang") || "hi");
 </script>
+
 
 </body>
 </html>
