@@ -261,13 +261,43 @@ function renderResult() {
   let level = percent <= 33 ? "low" : percent <= 66 ? "mid" : "high";
 
   // spin colour
-  const spin = localStorage.getItem("spin_result") || "awareness";
+ // 🔄 spin result (safe)
+const rawSpin = localStorage.getItem("spin_result");
 
-  resultTitle.innerText = t.meter[level].title;
-  resultText.innerText = t.meter[level].text;
-  practiceText.innerText = t.spin[spin] || t.meter[level].practice;
-  const card = document.querySelector(".card");
-card.className = "card " + spin;
+const finalSpin = (
+  rawSpin === "reaction" ||
+  rawSpin === "control" ||
+  rawSpin === "awareness" ||
+  rawSpin === "witness" ||
+  rawSpin === "peace" ||
+  rawSpin === "silence"
+)
+  ? rawSpin
+  : level === "low"
+    ? "reaction"
+    : level === "mid"
+      ? "awareness"
+      : "witness";
+
+// 🧠 meter based result
+resultTitle.innerText = t.meter[level].title;
+resultText.innerText = t.meter[level].text;
+
+// 🌱 combined practice (meter + spin)
+let combinedAdvice = "";
+
+// meter base
+combinedAdvice += t.meter[level].practice + " ";
+
+// spin direction
+combinedAdvice += t.spin[finalSpin];
+
+practiceText.innerText = combinedAdvice;
+
+// 🎨 card colour
+const card = document.querySelector(".card");
+card.className = "card " + finalSpin;
+
 }
 
 /* INSTALL */
