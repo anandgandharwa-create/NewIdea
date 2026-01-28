@@ -1,292 +1,182 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-  <meta charset="UTF-8">
-  <title>Zero Quantum Frequency™</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#020617">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Divine Access | Question</title>
 
-  <style>
-    body {
-      background: linear-gradient(180deg,#020617,#020b2d);
-      color: #e5e7eb;
-      font-family: sans-serif;
-      padding: 20px;
-    }
-    h1 {
-      text-align: center;
-      color: #facc15;
-      margin-bottom: 10px;
-    }
-    .subtitle {
-      text-align: center;
-      color: #94a3b8;
-      margin-bottom: 20px;
-    }
-    .lang {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    .lang button {
-      margin: 0 6px;
-      padding: 6px 12px;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
-    }
-    .question {
-      margin-bottom: 25px;
-      background: rgba(255,255,255,0.05);
-      padding: 18px;
-      border-radius: 12px;
-    }
-    label {
-      display: block;
-      margin: 6px 0;
-      cursor: pointer;
-    }
-    .main-btn {
-      width: 100%;
-      padding: 16px;
-      font-size: 18px;
-      background: #22c55e;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      color: #020617;
-      margin-top: 20px;
-    }
-  </style>
+<style>
+body{
+  margin:0;
+  font-family:system-ui,sans-serif;
+  background:#0b0b0f;
+  color:#ffffff;
+  padding:20px;
+  text-align:center;
+}
+
+h2{
+  color:#ffd369;
+  margin-bottom:6px;
+}
+
+.invite{
+  color:#aaa;
+  font-size:14px;
+  margin-bottom:18px;
+}
+
+.question{
+  font-size:18px;
+  margin:22px 0 18px;
+  line-height:1.5;
+}
+
+.options{
+  max-width:420px;
+  margin:auto;
+  text-align:left;
+}
+
+/* Base option */
+.option{
+  padding:16px;
+  margin-bottom:12px;
+  border-radius:16px;
+  cursor:pointer;
+  transition:all 0.25s ease;
+  color:#000;
+}
+
+/* Visual weight gradient (heavy → light) */
+.opt-1{ background:#ff6b6b; font-weight:600; }   /* Red */
+.opt-2{ background:#ff9f43; font-weight:600; }   /* Orange */
+.opt-3{ background:#feca57; font-weight:500; }   /* Yellow */
+.opt-4{ background:#48dbfb; font-weight:500; }   /* Cyan */
+.opt-5{ background:#1dd1a1; font-weight:400; }   /* Green */
+
+.option.selected{
+  transform:scale(1.02);
+  box-shadow:0 0 14px rgba(255,255,255,0.45);
+}
+
+/* Breath cue */
+.breath{
+  height:22px;
+  margin:10px 0 0;
+  color:#bbb;
+  font-size:14px;
+  opacity:0;
+  transition:opacity .4s ease;
+}
+.breath.show{ opacity:1; }
+
+/* Next button */
+.next-btn{
+  margin-top:22px;
+  padding:14px 36px;
+  border-radius:30px;
+  border:none;
+  background:#ffd369;
+  color:#000;
+  font-size:16px;
+  font-weight:bold;
+}
+.next-btn:disabled{
+  background:#555;
+  color:#aaa;
+  cursor:not-allowed;
+}
+
+/* Footer grounding */
+.footer{
+  margin-top:28px;
+  color:#8f8f8f;
+  font-size:13px;
+}
+</style>
 </head>
 
 <body>
 
-<h1 data-key="title">Zero Quantum Frequency™</h1>
-<div class="subtitle" data-key="subtitle">उत्तर नहीं - दर्पण</div>
+<h2>Divine Access</h2>
+<div class="invite">यह कोई परीक्षा नहीं है। जो अभी भीतर से सही लगे, वही चुनें।</div>
 
-<div class="lang">
-  <button onclick="setLang('hi')">हिन्दी</button>
-  <button onclick="setLang('en')">English</button>
+<div class="question">
+  आपकी दृष्टि में संसार और आपके जीवन के बारे में<br>
+  क्या सबसे अधिक सटीक है?
 </div>
 
-<form id="quiz"></form>
+<div class="options">
 
-<button class="main-btn" onclick="submitQuiz()" data-key="next">
-  आगे बढ़ें
-</button>
+  <div class="option opt-1" data-level="1">
+    संसार वास्तविक है, और जीवन का लक्ष्य इसमें सुख-सुविधा पाना है।
+  </div>
+
+  <div class="option opt-2" data-level="2">
+    संसार कर्मों का परिणाम है, जैसा बोया है वैसा ही मिलता है।
+  </div>
+
+  <div class="option opt-3" data-level="3">
+    संसार परिवर्तनशील है, स्थायी कुछ भी नहीं।
+  </div>
+
+  <div class="option opt-4" data-level="4">
+    संसार एक अनुभव है, मैं इसका साक्षी हूँ।
+  </div>
+
+  <div class="option opt-5" data-level="5">
+    संसार और ‘मैं’ दोनों चेतना में ही घटित हो रहे हैं।
+  </div>
+
+</div>
+
+<div class="breath" id="breathCue">एक श्वास लें… फिर आगे बढ़ें</div>
+
+<button class="next-btn" id="nextBtn" disabled>पहले चयन करें</button>
+
+<div class="footer">जो अभी सही लगे, वही पर्याप्त है।</div>
 
 <script>
-/* 🌐 UI TEXT */
-const uiText = {
-  hi: {
-    title: "Zero Quantum Frequency™",
-    subtitle: "उत्तर नहीं - दर्पण",
-    next: "आगे बढ़ें",
-    alert: "कृपया सभी प्रश्नों का उत्तर दें"
-  },
-  en: {
-    title: "Zero Quantum Frequency™",
-    subtitle: "Not answers - a mirror",
-    next: "Continue",
-    alert: "Please answer all questions"
-  }
-};
+let selectedLevel = null;
+const options = document.querySelectorAll(".option");
+const nextBtn = document.getElementById("nextBtn");
+const breath = document.getElementById("breathCue");
+let enableTimer = null;
 
-function setLang(lang) {
-  localStorage.setItem("lang", lang);
-  document.documentElement.lang = lang;
+// Option select with mindful pause
+options.forEach(opt=>{
+  opt.addEventListener("click", ()=>{
+    options.forEach(o=>o.classList.remove("selected"));
+    opt.classList.add("selected");
 
-  document.querySelectorAll("[data-key]").forEach(el => {
-    el.innerText = uiText[lang][el.dataset.key];
+    selectedLevel = opt.getAttribute("data-level");
+
+    // show breath cue
+    breath.classList.add("show");
+
+    // disable Next during pause
+    nextBtn.disabled = true;
+    nextBtn.textContent = "ठहरें…";
+
+    // clear any previous timer
+    if(enableTimer) clearTimeout(enableTimer);
+
+    // 1 second pause before enabling Next
+    enableTimer = setTimeout(()=>{
+      breath.classList.remove("show");
+      nextBtn.disabled = false;
+      nextBtn.textContent = "आगे बढ़ें";
+    }, 1000);
   });
+});
 
-  renderQuiz();
-}
-
-/* 🟢 25 QUESTION BANKS */
-const questionBank = {
-  hi: [
-    { q:"अचानक कुछ गलत हो जाए तो भीतर क्या उठता है?", type:"reaction" },
-    { q:"कोई आपकी बात न माने तो पहली अनुभूति?", type:"reaction" },
-    { q:"किसी गलती के बाद पहली प्रतिक्रिया?", type:"reaction" },
-    { q:"टकराव की स्थिति में आप क्या अनुभव करते हैं?", type:"reaction" },
-    { q:"आलोचना सुनते समय भीतर क्या होता है?", type:"reaction" },
-
-    { q:"जीवन में नियंत्रण छूटे तो?", type:"control" },
-    { q:"आप अपने निर्णयों को कैसे देखते हैं?", type:"control" },
-    { q:"कोई योजना बिगड़ जाए तो?", type:"control" },
-    { q:"आप स्वयं को कितना कर्ता मानते हैं?", type:"control" },
-    { q:"परिवर्तन को आप कैसे देखते हैं?", type:"control" },
-
-    { q:"आपका ध्यान अधिकतर कहाँ रहता है?", type:"awareness" },
-    { q:"वर्तमान क्षण में रहना आपको कैसा लगता है?", type:"awareness" },
-    { q:"आप अपनी प्रतिक्रियाओं को कितनी स्पष्टता से देखते हैं?", type:"awareness" },
-    { q:"कुछ घटते समय क्या आप उसे देख पाते हैं?", type:"awareness" },
-    { q:"आप इस क्षण स्वयं को कैसे देखते हैं?", type:"awareness" },
-
-    { q:"अकेले होने पर मन कहाँ रहता है?", type:"emotion" },
-    { q:"किसी के दुख को देखकर भीतर क्या होता है?", type:"emotion" },
-    { q:"असफलता का अनुभव कैसा होता है?", type:"emotion" },
-    { q:"सफलता मिलने पर भीतर क्या उठता है?", type:"emotion" },
-    { q:"जीवन आपको भावनात्मक रूप से कैसा लगता है?", type:"emotion" },
-
-    { q:"रुकने का अवसर मिले तो आप क्या करते हैं?", type:"silence" },
-    { q:"कुछ न करते समय आप क्या अनुभव करते हैं?", type:"silence" },
-    { q:"शांत क्षणों में भीतर क्या होता है?", type:"silence" },
-    { q:"जब कुछ करने को न हो तो मन?", type:"silence" },
-    { q:"आपकी सबसे गहरी पहचान किसमें है?", type:"silence" }
-  ],
-
-  en: [
-    { q:"When something suddenly goes wrong, what arises inside?", type:"reaction" },
-    { q:"When someone doesn’t listen to you, what is the first feeling?", type:"reaction" },
-    { q:"Your first reaction after making a mistake?", type:"reaction" },
-    { q:"What do you feel during conflict?", type:"reaction" },
-    { q:"What happens inside when you are criticised?", type:"reaction" },
-
-    { q:"What happens when control slips away?", type:"control" },
-    { q:"How do you see your decisions?", type:"control" },
-    { q:"When a plan fails, what happens?", type:"control" },
-    { q:"How much do you see yourself as the doer?", type:"control" },
-    { q:"How do you relate to change?", type:"control" },
-
-    { q:"Where does your attention mostly remain?", type:"awareness" },
-    { q:"How does being in the present feel to you?", type:"awareness" },
-    { q:"How clearly do you observe your reactions?", type:"awareness" },
-    { q:"Can you see events as they happen?", type:"awareness" },
-    { q:"How do you see yourself in this moment?", type:"awareness" },
-
-    { q:"Where does the mind go when you are alone?", type:"emotion" },
-    { q:"What arises when you see someone in pain?", type:"emotion" },
-    { q:"How does failure feel?", type:"emotion" },
-    { q:"What arises when you succeed?", type:"emotion" },
-    { q:"How does life feel emotionally to you?", type:"emotion" },
-
-    { q:"When you get a chance to pause, what do you do?", type:"silence" },
-    { q:"What do you experience when doing nothing?", type:"silence" },
-    { q:"What happens inside during quiet moments?", type:"silence" },
-    { q:"When there is nothing to do, where is the mind?", type:"silence" },
-    { q:"Where is your deepest sense of identity?", type:"silence" }
-  ]
-};
-
-/* 🟢 OPTIONS BY CATEGORY */
-const options = {
-  hi: {
-    reaction: [
-      "मैं तुरंत प्रतिक्रिया करता/करती हूँ",
-      "मैं खुद को सही ठहराता/ठहराती हूँ",
-      "मैं प्रतिक्रिया को देख पाता/पाती हूँ",
-      "मैं उसे होने देता/देती हूँ"
-    ],
-    control: [
-      "मैं स्थिति को संभालना चाहता/चाहती हूँ",
-      "मैं समाधान खोजता/खोजती हूँ",
-      "मैं स्थिति को देखता/देखती हूँ",
-      "मैं नियंत्रण छोड़ देता/देती हूँ"
-    ],
-    awareness: [
-      "मेरा ध्यान भटक जाता है",
-      "कभी देख पाता/पाती हूँ, कभी नहीं",
-      "अधिकतर देख पाता/पाती हूँ",
-      "मैं केवल साक्षी रहता/रहती हूँ"
-    ],
-    emotion: [
-      "मैं भावना में बह जाता/जाती हूँ",
-      "मैं उसे दबाने की कोशिश करता/करती हूँ",
-      "मैं भावना को देखता/देखती हूँ",
-      "मैं भावना को होने देता/देती हूँ"
-    ],
-    silence: [
-      "मन बेचैन हो जाता है",
-      "मैं कुछ करने लगता/लगती हूँ",
-      "मैं ठहरने की कोशिश करता/करती हूँ",
-      "मैं शांति में रहता/रहती हूँ"
-    ]
-  },
-
-  en: {
-    reaction: [
-      "I react immediately",
-      "I justify myself",
-      "I can observe the reaction",
-      "I let it happen"
-    ],
-    control: [
-      "I try to manage the situation",
-      "I look for solutions",
-      "I observe the situation",
-      "I let go of control"
-    ],
-    awareness: [
-      "My attention gets distracted",
-      "Sometimes I can see, sometimes not",
-      "Most of the time I can see",
-      "I remain as the witness"
-    ],
-    emotion: [
-      "I get carried away by emotion",
-      "I try to suppress it",
-      "I observe the emotion",
-      "I allow the emotion"
-    ],
-    silence: [
-      "The mind becomes restless",
-      "I start doing something",
-      "I try to remain still",
-      "I rest in silence"
-    ]
-  }
-};
-
-let selected = [];
-
-function renderQuiz() {
-  const lang = localStorage.getItem("lang") || "hi";
-  const bank = questionBank[lang];
-
-  selected = [...bank].sort(() => 0.5 - Math.random()).slice(0, 5);
-
-  const quiz = document.getElementById("quiz");
-  quiz.innerHTML = "";
-
-  selected.forEach((item, idx) => {
-    const div = document.createElement("div");
-    div.className = "question";
-
-    let html = `<p>${idx + 1}. ${item.q}</p>`;
-    options[lang][item.type].forEach((opt, i) => {
-      html += `
-        <label>
-          <input type="radio" name="q${idx}" value="${i}">
-          ${opt}
-        </label>`;
-    });
-
-    div.innerHTML = html;
-    quiz.appendChild(div);
-  });
-}
-
-function submitQuiz() {
-  const lang = localStorage.getItem("lang") || "hi";
-  let answers = [];
-
-  for (let i = 0; i < selected.length; i++) {
-    const sel = document.querySelector(`input[name="q${i}"]:checked`);
-    if (!sel) {
-      alert(uiText[lang].alert);
-      return;
-    }
-    answers.push(parseInt(sel.value));
-  }
-
-  localStorage.setItem("zqf_answers", JSON.stringify(answers));
-  window.location.href = "meter.html";
-}
-
-setLang(localStorage.getItem("lang") || "hi");
+// Go next
+nextBtn.addEventListener("click", ()=>{
+  if(!selectedLevel) return;
+  localStorage.setItem("truthLevel", selectedLevel);
+  window.location.href = "spin.html";
+});
 </script>
 
 </body>
